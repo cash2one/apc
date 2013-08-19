@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block nav %}
+{% from 'import/nav.html' import nav %}
+{{ nav(current_user, 'dashboard') }}
+{% endblock %}
+
+{% block content_body %}
+<h1>This is DashBoard!</h1>
+{% endblock %}
