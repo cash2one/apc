@@ -37,3 +37,32 @@ class UserDB(db.Model):
 
     def __repr__(self):
         return '<User %r, %r>' % (self.username, self.chinese_name)
+
+
+class IDC(db.Model):
+    __tablename__ = 'idc'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(64))
+    chinese_name = Column(String(64))
+
+    def __init__(self, name, chinese_name):
+        self.name = name
+        self.chinese_name = chinese_name
+
+
+    def __repr__(self):
+        return '<IDC %r>' % self.name
+
+
+class CPU_Mem(db.Model):
+    __tablename__ = "cpu_mem"
+    id = Column(Integer, primary_key=True)
+    cpu = Column(Integer)
+    mem = Column(Integer)
+
+    def __init__(self, cpu, mem):
+        self.cpu = cpu
+        self.mem = mem
+
+    def __repr__(self):
+        return '%r Cores %rG' % (self.cpu, self.mem)
