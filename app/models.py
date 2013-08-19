@@ -44,11 +44,14 @@ class IDC(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(64))
     chinese_name = Column(String(64))
+    occi_api = Column(String(256))
+    sunstone_api = Column(String(256))
 
-    def __init__(self, name, chinese_name):
+    def __init__(self, name, chinese_name, occi_api, sunstone_api):
         self.name = name
         self.chinese_name = chinese_name
-
+        self.occi_api = occi_api
+        self.sunstone_api = sunstone_api
 
     def __repr__(self):
         return '<IDC %r>' % self.name
