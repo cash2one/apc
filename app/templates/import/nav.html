@@ -1,4 +1,11 @@
 {% macro nav(current_user, view) %}
+<script>
+    $(document).ready(function() {
+        $("#nav_{{view}}").addClass("active");
+        $("#tab_{{view}}").addClass("active");
+    });
+</script>
+
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
