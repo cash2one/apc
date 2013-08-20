@@ -1,0 +1,15 @@
+{% macro nav_inner(view) %}
+<script>
+    $(document).ready(function() {
+        $("#nav_{{view}}").addClass("active");
+        $("#tab_{{view}}").addClass("active");
+    });
+</script>
+
+<div class="tabtable tabs-left">
+    <ul class="nav nav-tabs">
+        <li id="nav_idc"><a href="/admin/idc">IDC</a></li>
+        <li id="nav_cpu_mem"><a href="/admin/cpu_mem">CPU_MEM</a></li>
+    </ul>
+</div>
+{% endmacro %}
