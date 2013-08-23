@@ -24,6 +24,8 @@ def add():
         return jsonify(msg="cpu need be digit")
     if not mem.isdigit():
         return jsonify(msg="mem need be digit")
+    if CPU_Mem.query.filter_by(cpu=cpu,mem=mem).count():
+        return jsonify(msg="existed");
     c_m = CPU_Mem(cpu, mem)
     db.session.add(c_m)
     db.session.commit()
@@ -39,6 +41,8 @@ def update():
         return jsonify(msg="cpu need be digit")
     if not mem.isdigit():
         return jsonify(msg="mem need be digit")
+    if CPU_Mem.query.filter_by(cpu=cpu,mem=mem).count():
+        return jsonify(msg="existed");
     c_m = CPU_Mem.query.get(id)
     c_m.cpu = cpu
     c_m.mem = mem

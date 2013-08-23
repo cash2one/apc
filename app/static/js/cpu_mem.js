@@ -86,6 +86,7 @@ $(this).on("click",".table-row .icon-save",function(){
             $cpu.html('<font color="#009900">'+cpu+'</font>');
             $mem.html('<font color="#009900">'+mem+'</font>');
             $action.remove();
+            sort_table();
         },
         "json"
         );
