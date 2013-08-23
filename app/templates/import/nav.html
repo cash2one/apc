@@ -2,7 +2,6 @@
 <script>
     $(document).ready(function() {
         $("#nav_{{view}}").addClass("active");
-        $("#tab_{{view}}").addClass("active");
     });
 </script>
 
@@ -12,8 +11,8 @@
             <a class="brand" href="{{ url_for('index') }}">Anjuke Private Cloud</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="dashboard"><a href="{{ url_for('index') }}">主面板</a></li>
-                    <li class="buy"><a href="{{ url_for('buy.index') }}">购买</a></li>
+                    <li class="dashboard" id="nav_dashboard"><a href="{{ url_for('index') }}">主面板</a></li>
+                    <li class="buy" id="nav_buy"><a href="{{ url_for('buy.index') }}">购买</a></li>
                     <li class="buy"><a href="{{ url_for('buy.index') }}">个人中心</a></li>
                 </ul>
                 <ul class="nav pull-right">

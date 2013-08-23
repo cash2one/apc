@@ -40,3 +40,18 @@ body {
 
 .mgr-10 { margin-right: 10px; }
 .mgr-20 { margin-right: 20px; }
+
+.table-row {
+    border-bottom: #DDDDDD solid thin;
+    padding-top: 8px;
+}
+
+.table-head {
+    border-bottom: #CCCCCC solid thin;
+    margin-top: 20px;
+}
+
+.icon-edit,.icon-remove {
+    zoom: 1.2;
+    -moz-transform: scale(1.2);
+}

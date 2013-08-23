@@ -1,5 +1,40 @@
 {% extends 'admin/cpu_mem/layout.html' %}
 
 {% block content_tab %}
+<div class="span8">
+<!--add-->
+<div class="row-fluid" id="addForm">
+    <div class="pull-right">
+        <form class="form-inline">
+            <input type="text" placeholder="CPU" id="add_cpu" class="input-mini" />
+            &nbsp;&nbsp; &nbsp;&nbsp;
+            <input type="text" placeholder="MEM" id="add_mem" class="input-mini" />
+            &nbsp;&nbsp;
+            <a class="btn btn-primary btn-small" href="javascript:void(0)"><i class="icon-plus icon-white"></i>&nbsp;Add</a>
+        </form>
+    </div>
+</div>
+
+<!--cpu_mem table-->
+<div id="cpu_mem_table">
+<div class="row-fluid table-head">
+    <div class="span3"><strong>ID</strong></div>
+    <div class="span4"><strong>CPU</strong>&nbsp;(Cores)</div>
+    <div class="span3"><strong>MEM</strong>&nbsp;(G)</div>
+</div>
+
+{% for row in rows %}
+<div class="row-fluid table-row">
+    <div class="span3"><em>{{ row.id }}</em></div>
+    <div class="span4"><font color="#009900">{{ row.cpu }}</font></div>
+    <div class="span3"><font color="#009900">{{ row.mem }}</font></div>
+</div>
+{% endfor %}
+</div>
+
+<script src="{{ url_for('static',filename='js/cpu_mem.js') }}"></script>
+</div>
+
+
 {% endblock %}
 
