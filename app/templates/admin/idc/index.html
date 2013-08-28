@@ -1,2 +1,208 @@
 {% extends 'admin/idc/layout.html' %}
 
+{% block content_tab %}
+<div>
+    <div style='height:40px; display:block;'>
+        <div class='msg' style='display:none; width:80%; line-height:40px; border-radius:8px;background-color:#D9EDF7;text-align:center; vertical-align: center;font-size:1em;color:#339933;'></div>
+        <div class='error' style='display:none; width:80%; line-height:40px; border-radius:8px;background-color:#D9EDF7;text-align:center; vertical-align: center;font-size:1em;color:#CC0000;'></div>
+    </div>
+    <form action='' method='post' name='add'>	
+	{{form.hidden_tag()}}
+	<fieldset>
+	    <legend>IDC信息</legend>
+        <div style='float:left;'>
+        <div class='input-prepend'>
+	        <span style='margin:0 30px 0 0;'><span class='add-on' style='width:90px;'>Name</span>{{form.name}}</span>
+	        <span class='add-on' style='width:90px;'>CnName</span>{{form.cname}}
+        </div>
+        <div class='input-prepend'>
+            <span style='margin:0 30px 0 0;'><span class='add-on' style='width:90px;'>OcciApi</span>{{form.occapi}}</span>
+            <span class='add-on' style='width:90px;'>SunStoneApi</span>{{form.sunapi}}
+        </div>
+        <button class='btn btn-primary' id='addButton' type='button' style='float:right;'><i class='icon-plus icon-white'></i> 添加</button>
+        </div>
+    </fieldset>
+    </form>
+
+    <table class="table table-hover" id='test'>
+	<thead>
+		<tr>
+		<td width='10%'>ID</td>
+		<td width='15%'>Name</td>
+		<td width='20%'>CnName</td>
+		<td width='20%'>OcciApi</td>
+		<td width='20%'>SunstoneApi</td>
+		<td width='15%'></td>
+		</tr>
+	</thead>
+	<tbody id='idcTb'>
+	{% for item in allRes %}
+	<tr>
+		<td>{{item.id}}</td>
+		<td>{{item.name}}</td>
+		<td>{{item.chinese_name}}</td>
+		<td>{{item.occi_api}}</td>
+		<td>{{item.sunstone_api}}</td>
+		<td class='icons'></td>
+	</tr>
+	{% endfor %}
+	</tbody>
+    </table>
+
+</div>
+<script type='text/javascript'>
+var icons_edit = "<a href='javascript:void(0)'><i class='icon-edit' id='edit'></i></a>&emsp;&emsp;<a href='javascript:void(0)'><i class='icon-remove' id='remove'></i></a>";
+var icons_ok = "<a href='javascript:void(0)'><i class='icon-ok' id='save'></i></a>&emsp;&emsp;<a href='javascript:void(0);'><i class='icon-trash' id='trash'></i></a>";
+
+$(function(){
+    $('#addButton').click(function(){
+        var name = $('#name').val();
+        var cname = $('#cname').val();
+        var occapi = $('#occapi').val();
+        var sunapi = $('#sunapi').val();
+        
+        if(!(verify(name) && verify(cname) && verify(occapi) && verify(sunapi))){
+            error('表单项不能为空！');
+            return ;
+        }
+
+        sort_table();
+ 
+        $.get('/admin/idc/add/', {name : name, cname : cname, occapi : occapi, sunapi : sunapi},function(res){
+            var tr = '<tr style="display:none;"><td>'+res['id']+'</td><td>'+res['name']+'</td><td>'+res['cname']+'</td><td>'+res['occapi']+'</td><td>'+res['sunapi']+'</td><td class="icons"></td></tr>';
+       	    $('#idcTb').prepend(tr);
+            $('#idcTb tr:first').fadeIn(3000);
+        });
+        message('已添加');
+    });
+
+    function verify(item) {
+        if(item == null || item.trim().length == 0)
+            return false;
+        return true;
+    }
+   
+    $(this).on('mouseenter', '#idcTb tr', function() {
+        if($(this).has('input')[0]) {
+            $(this).children('.icons').html(icons_ok);
+            return ;  
+        }
+        $(this).children('.icons').html(icons_edit);
+	});
+
+    $(this).on('mouseleave', '#idcTb tr',function() {
+		$('.icons').empty();
+	});  
+
+	$(this).on('click', '#edit', function() {
+        if($('#idcTb').has('input')[0]){
+            var tds = $('input').parents('tr').children('td');
+            tds.eq(1).html(tds.eq(1).children('input').val());
+            tds.eq(2).html(tds.eq(2).children('input').val());
+            tds.eq(3).html(tds.eq(3).children('input').val());
+            tds.eq(4).html(tds.eq(4).children('input').val());
+        }
+
+        var tr = $(this).parents("tr");
+		var name = tr.find('td').eq(1);
+		var cname = name.next();
+		var occapi = cname.next();
+		var sunapi = occapi.next();
+
+        g_name = name.text();
+		g_cname = cname.text();
+		g_occapi = occapi.text();
+		g_sunapi = sunapi.text();
+
+		name.html("<input type='text' style='width:80px;' value="+g_name+">");
+		cname.html("<input type='text' style='width:80px;' value="+g_cname+">");
+		occapi.html("<input type='text' style='width:100px;' value="+g_occapi+">");
+		sunapi.html("<input type='text' style='width:100px;' value="+g_sunapi+">");
+
+		$(this).parents('.icons').html(icons_ok);
+	});
+
+	$(this).on('click', '#save', function() {
+        var tds = $(this).parents('tr').find('td');
+        
+        var $name = tds.eq(1);
+		var $cname = tds.eq(2);
+		var $occapi = tds.eq(3);
+		var $sunapi = tds.eq(4);
+
+        var id = tds.first().text();
+        var name = $name.children().first().val();
+        var cname = $cname.children().first().val();
+        var occapi = $occapi.children().first().val();
+        var sunapi = $sunapi.children().first().val();
+
+        $name.html(name);
+        $cname.html(cname);
+        $occapi.html(occapi);
+        $sunapi.html(sunapi);
+
+		$.get('/admin/idc/edit', {id:id, name:name, cname:cname, occapi:occapi, sunapi:sunapi});
+        $(this).parentsUntil('.icons').html(icons_edit);
+      
+        message('已保存');
+	});  
+
+	$(this).on('click', '#trash', function() {
+        var tds = $(this).parents('tr').find('td');
+
+        var name = tds.eq(1);
+		var cname = tds.eq(2);
+		var occapi = tds.eq(3);
+		var sunapi = tds.eq(4);
+
+	    name.html(g_name);
+        cname.html(g_cname);
+        occapi.html(g_occapi);
+        sunapi.html(g_sunapi);
+               
+        tds.last().html(icons_edit);
+	});
+
+	$(this).on('click', '.icon-remove', function() {
+        var id = $(this).parents("tr").children().first().text();
+		$.get('/admin/idc/delete/', {id:id});
+        $(this).parents("tr").remove();
+        message('已删除');
+	});
+
+    var message = function(m){
+        $('.error').css('display', 'none');
+        $('.msg').text(m);
+        $('.msg').css('display','block');
+        $('.msg').fadeIn(3000);       
+        setTimeout(function(){
+            $('.msg').fadeOut(1000);
+        },500);
+    }
+    
+    function error(m){
+        $('.msg').css('display', 'none');
+        $('.error').text(m);
+        $('.error').css('display','block');
+        $('.error').fadeIn(3000);       
+        setTimeout(function(){
+            $('.error').fadeOut(1000);
+        },500);
+    }
+
+    sort_table();
+
+    function sort_table(){
+        var sort_id = function(a, b){
+
+            var a_val = ($(a).children("td:eq(0)").text()).valueOf();
+            var b_val = ($(b).children("td:eq(0)").text()).valueOf();
+            return a_val-b_val;
+        }
+
+        $('#idcTb tr').sort(sort_id).appendTo('#idcTb');
+    }
+});
+
+</script>
+{% endblock %}
