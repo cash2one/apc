@@ -53,6 +53,9 @@ $(this).on("click",".table-row .icon-remove",function(){
         );
 });
 $(this).on("click",".table-row .icon-edit",function(){
+    if($(".table-row").has(".icon-trash")[0]) {
+        $(".table-row .icon-trash").trigger("click");
+    }
     $row = $(this).closest(".table-row");
     id = $row.children("div:first").text();
     $cpu = $row.children("div:eq(1)");
