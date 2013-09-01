@@ -12,12 +12,12 @@
 	    <legend>IDC信息</legend>
         <div style='float:left;'>
         <div class='input-prepend'>
-	        <span style='margin:0 30px 0 0;'><span class='add-on' style='width:90px;'>Name</span>{{form.name}}</span>
-	        <span class='add-on' style='width:90px;'>CnName</span>{{form.cname}}
+			<span style='margin:0 30px 0 0;'><span class='add-on' style='width:90px;'>Name</span>{{form.name}}</span>
+			<span class='add-on' style='width:90px;'>CnName</span>{{form.cname}}
         </div>
         <div class='input-prepend'>
-            <span style='margin:0 30px 0 0;'><span class='add-on' style='width:90px;'>OcciApi</span>{{form.occapi}}</span>
-            <span class='add-on' style='width:90px;'>SunStoneApi</span>{{form.sunapi}}
+			<span style='margin:0 30px 0 0;'><span class='add-on' style='width:90px;'>OcciApi</span>{{form.occapi}}</span>
+			<span class='add-on' style='width:90px;'>SunStoneApi</span>{{form.sunapi}}
         </div>
         <button class='btn btn-primary' id='addButton' type='button' style='float:right;'><i class='icon-plus icon-white'></i> 添加</button>
         </div>
@@ -83,11 +83,11 @@ $(function(){
     }
    
     $(this).on('mouseenter', '#idcTb tr', function() {
-        if($(this).has('input')[0]) {
-            $(this).children('.icons').html(icons_ok);
-            return ;  
+		if($(this).has('input')[0]) {
+			$(this).children('.icons').html(icons_ok);
+			return ;  
         }
-        $(this).children('.icons').html(icons_edit);
+		$(this).children('.icons').html(icons_edit);
 	});
 
     $(this).on('mouseleave', '#idcTb tr',function() {
@@ -103,13 +103,13 @@ $(function(){
             tds.eq(4).html(tds.eq(4).children('input').val());
         }
 
-        var tr = $(this).parents("tr");
+		var tr = $(this).parents("tr");
 		var name = tr.find('td').eq(1);
 		var cname = name.next();
 		var occapi = cname.next();
 		var sunapi = occapi.next();
 
-        g_name = name.text();
+		g_name = name.text();
 		g_cname = cname.text();
 		g_occapi = occapi.text();
 		g_sunapi = sunapi.text();
@@ -123,23 +123,23 @@ $(function(){
 	});
 
 	$(this).on('click', '#save', function() {
-        var tds = $(this).parents('tr').find('td');
+		var tds = $(this).parents('tr').find('td');
         
-        var $name = tds.eq(1);
+		var $name = tds.eq(1);
 		var $cname = tds.eq(2);
 		var $occapi = tds.eq(3);
 		var $sunapi = tds.eq(4);
 
-        var id = tds.first().text();
-        var name = $name.children().first().val();
-        var cname = $cname.children().first().val();
-        var occapi = $occapi.children().first().val();
-        var sunapi = $sunapi.children().first().val();
+		var id = tds.first().text();
+		var name = $name.children().first().val();
+		var cname = $cname.children().first().val();
+		var occapi = $occapi.children().first().val();
+		var sunapi = $sunapi.children().first().val();
 
-        $name.html(name);
-        $cname.html(cname);
-        $occapi.html(occapi);
-        $sunapi.html(sunapi);
+		$name.html(name);
+		$cname.html(cname);
+		$occapi.html(occapi);
+		$sunapi.html(sunapi);
 
 		$.get('/admin/idc/edit', {id:id, name:name, cname:cname, occapi:occapi, sunapi:sunapi});
         $(this).parentsUntil('.icons').html(icons_edit);
@@ -150,24 +150,24 @@ $(function(){
 	$(this).on('click', '#trash', function() {
         var tds = $(this).parents('tr').find('td');
 
-        var name = tds.eq(1);
+		var name = tds.eq(1);
 		var cname = tds.eq(2);
 		var occapi = tds.eq(3);
 		var sunapi = tds.eq(4);
 
-	    name.html(g_name);
-        cname.html(g_cname);
-        occapi.html(g_occapi);
-        sunapi.html(g_sunapi);
+		name.html(g_name);
+		cname.html(g_cname);
+		occapi.html(g_occapi);
+		sunapi.html(g_sunapi);
                
-        tds.last().html(icons_edit);
+		tds.last().html(icons_edit);
 	});
 
 	$(this).on('click', '.icon-remove', function() {
-        var id = $(this).parents("tr").children().first().text();
+		var id = $(this).parents("tr").children().first().text();
 		$.get('/admin/idc/delete/', {id:id});
-        $(this).parents("tr").remove();
-        message('已删除');
+		$(this).parents("tr").remove();
+		message('已删除');
 	});
 
     var message = function(m){
