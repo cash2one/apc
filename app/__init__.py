@@ -43,9 +43,11 @@ def load_user(userid):
 #
 from app.views import general
 from app.views import buy
+from app.views.admin import index
 from app.views.admin import idc
 from app.views.admin import cpu_mem
 
 app.register_blueprint(buy.mod)
+app.register_blueprint(index.mod)
 app.register_blueprint(idc.mod)
 app.register_blueprint(cpu_mem.mod)

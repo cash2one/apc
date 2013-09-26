@@ -1,0 +1,30 @@
+{% macro nav_admin(view) %}
+<script type="text/javascript">
+$(document).ready(function() {
+});
+</script>
+
+<div class="block">
+    <h2>虚拟机配置</h2>
+    <ul>
+        <li><a href="{{ url_for('idc.index') }}">IDC管理</a></li>
+        <li><a href="{{ url_for('cpu_mem.index') }}">虚拟机方案</a></li>
+        <li><a href="#">网络</a></li>
+        <li><a href="#">OS镜像</a></li>
+    </ul>
+</div>
+
+<div class="block">
+    <h2>用户</h2>
+    <ul>
+        <li><a href="#">用户列表</a></li>
+    </ul>
+</div>
+
+<div class="block">
+    <h2>其他</h2>
+    <ul>
+        <li><a href="#">其他</a></li>
+    </ul>
+</div>
+{% endmacro %}

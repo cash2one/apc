@@ -4,16 +4,16 @@ from flask import Blueprint, render_template, request, jsonify
 from wtforms import Form, BooleanField, TextField, validators
 from operator import itemgetter, attrgetter
 
-mod = Blueprint('cpu_mem', __name__, url_prefix='/admin/cpu_mem')
-
 from app import app, db
 from app.models import *
 
 
+mod = Blueprint('cpu_mem', __name__, url_prefix='/admin/cpu_mem')
+
 @mod.route('/', methods=['GET'])
 def index():
-        rows = CPU_Mem.query.all()
-        return render_template('admin/cpu_mem/index.html', rows=rows)
+    rows = CPU_Mem.query.all()
+    return render_template('admin/cpu_mem/index.html', rows=rows)
 
 
 @mod.route('/add/', methods=['POST'])

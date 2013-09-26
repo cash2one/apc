@@ -1,0 +1,10 @@
+{% extends 'admin/layout.html' %}
+
+{% block sidebar %}
+{% from 'import/nav_admin.html' import nav_admin %}
+{{ nav_admin('admin') }}
+{% endblock %}
+
+{% block region %}
+<h2>Content here!</h2>
+{% endblock %}
