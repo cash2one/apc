@@ -19,15 +19,12 @@ body {
     text-align: center;
 }
 
-.column-narrow { width: 260px; }
-.column-wide { width: 700px; }
-
 
 /*
  * Sidebar Nav
  */
 #sidebar .block {
-    border: 1px solid #DDD;
+    border: 1px solid #EEE;
     border-radius: 6px 6px 0 0;
     margin-bottom: 20px;
 }
@@ -36,7 +33,7 @@ body {
     font-size: 14px;
     margin: 0;
     padding: 0 15px;
-    background-color: #DDD;
+    background-color: #EEE;
 }
 
 #sidebar ul {
@@ -58,11 +55,16 @@ body {
     background-color: #EEE;
 }
 
+
 /*
  * Overwrite bootstrap CSS
  */
 .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
     width: 980px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
 }
 
 
@@ -88,9 +90,4 @@ body {
 .table-head {
     border-bottom: #CCCCCC solid thin;
     margin-top: 20px;
-}
-
-.icon-edit, .icon-remove {
-    zoom: 1.2;
-    -moz-transform: scale(1.2);
 }

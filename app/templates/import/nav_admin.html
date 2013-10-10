@@ -9,8 +9,8 @@ $(document).ready(function() {
     <ul>
         <li><a href="{{ url_for('idc.index') }}">IDC管理</a></li>
         <li><a href="{{ url_for('cpu_mem.index') }}">虚拟机方案</a></li>
-        <li><a href="#">网络</a></li>
-        <li><a href="#">OS镜像</a></li>
+        <li><a href="{{ url_for('network.index') }}">网络</a></li>
+        <li><a href="{{ url_for('osimage.index') }}">OS镜像</a></li>
     </ul>
 </div>
 
