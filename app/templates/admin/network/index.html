@@ -1,0 +1,68 @@
+{% extends 'admin/network/layout.html' %}
+
+
+{% block addon_head %}
+<script src="{{ url_for('static',filename='js/admin/network.js') }}"></script>
+<script type="text/javascript">
+    var vnet_sunstone = {{ vnet_sunstone|safe }};
+</script>
+{% endblock %}
+
+
+{% block region %}
+<form class="form-inline" action="{{ url_for('network.add') }}" method="POST">
+    <fieldset>
+        <legend>网络管理</legend>
+        <div class="text-right">
+            <select class="span2" id="idc_id" name="idc_id">
+                {% for i in idc %}
+                <option value="{{ i.id }}">{{ i.name }}</option>
+                {% endfor %}
+            </select>
+            <select class="span3" id="sunstone_id" name="sunstone_id">
+            </select>
+            <input type="hidden" class="span3" id="sunstone_name" name="sunstone_name">
+            <input type="text" class="span3" id="name" name="name">
+            <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
+        </div>
+    </fieldset>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="hide"><font color="gray">#</font></th>
+            <th width="50">机房</th>
+            <th width="20%">Sunstone ID</th>
+            <th width="25%">Sunstone Name</th>
+            <th>名称</th>
+            <th width="50">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if vnet.__len__() == 0 %}
+        <tr>
+            <td colspan="6">Null</td>
+        </tr>
+        {% endif %}
+        {% for n in vnet %}
+        <tr id="net_{{ n.id }}" data-edit-url="{{ url_for('network.edit', network_id=n.id) }}">
+            <td class="hide"><font color="gray">{{ n.id }}</font></td>
+            <td>{{ idc_dict[n.idc_id].name }}</td>
+            <td>{{ n.sunstone_id }}</td>
+            <td>{{ n.sunstone_name }}</td>
+            <td>
+                <span class="net_name">{{ n.name }}</span>
+                <input class="hide net_name" value="{{ n.name }}"/>
+            </td>
+            <td class="net-action" data-id="net_{{ n.id }}">
+                <a class="edit" href="#"><i class="icon-edit"></i></a>
+                <a class="remove" href="{{ url_for('network.delete', network_id=n.id) }}"><i class="icon-remove"></i></a>
+                <a class="save hide" href="#"><i class="icon-ok"></i></a>
+                <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

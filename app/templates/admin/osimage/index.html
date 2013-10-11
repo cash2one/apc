@@ -1,0 +1,45 @@
+{% extends 'admin/network/layout.html' %}
+
+{% block region %}
+<form class="form-inline">
+    <fieldset>
+        <legend>镜像管理</legend>
+        <div class="text-right">
+            <select class="span2">
+                <option>IDC10</option>
+                <option>IDC20</option>
+            </select>
+            <select class="span3">
+                <option>Redhat 5.8</option>
+                <option>Ubuntu 12.04</option>
+            </select>
+            <input type="text" class="span3"/>
+            <a class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</a>
+        </div>
+    </fieldset>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>IDC</th>
+            <th>Sunstone ID</th>
+            <th>Sunstone Name</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in image %}
+        <tr>
+            <td>{{ i.idc_name }}</td>
+            <td>{{ i.id }}</td>
+            <td>{{ i.name }}</td>
+            <td>
+                <a href=""><i class="icon-edit"></i></a>
+                <a href=""><i class="icon-remove"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
