@@ -3,9 +3,6 @@
 
 {% block addon_head %}
 <script src="{{ url_for('static',filename='js/admin/network.js') }}"></script>
-<script type="text/javascript">
-    var vnet_sunstone = {{ vnet_sunstone|safe }};
-</script>
 {% endblock %}
 
 
@@ -14,16 +11,19 @@
     <fieldset>
         <legend>网络管理</legend>
         <div class="text-right">
-            <select class="span2" id="idc_id" name="idc_id">
-                {% for i in idc %}
-                <option value="{{ i.id }}">{{ i.name }}</option>
-                {% endfor %}
-            </select>
-            <select class="span3" id="sunstone_id" name="sunstone_id">
-            </select>
-            <input type="hidden" class="span3" id="sunstone_name" name="sunstone_name">
-            <input type="text" class="span3" id="name" name="name">
-            <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
+            <span class="text-left">
+                {{ form.hidden_tag() }}
+                {{ form.csrf }}
+                <select class="span2" id="idc_id" name="idc_id">
+                    {% for i in idc %}
+                    <option value="{{ i.id }}" data-api-url="{{ url_for('sunstone.vnet', idc_id=i.id) }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" class="span3" id="sunstone_name" name="sunstone_name" placeholder="sunstone name" autocomplete="off"/>
+                <input type="hidden" class="span3" id="sunstone_id" name="sunstone_id"/>
+                <input type="text" class="span3" id="name" name="name" placeholder="name"/>
+                <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
+            </span>
         </div>
     </fieldset>
 </form>

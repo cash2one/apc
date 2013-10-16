@@ -27,36 +27,36 @@ $(document).ready(function() {
     });
 
     //edit button
-    $(".net-action .edit").click(function() {
-        id = "#" + $(this).parent().attr("data-id");
-        $(id + " span").hide();
-        $(id + " .edit").hide();
-        $(id + " .remove").hide();
-        $(id + " input").show();
-        $(id + " .save").show();
-        $(id + " .cancle").show();
+    $(".os-action .edit").click(function() {
+        eid = "#" + $(this).parent().attr("data-id");
+        $(eid + " span").hide();
+        $(eid + " .edit").hide();
+        $(eid + " .remove").hide();
+        $(eid + " input").show();
+        $(eid + " .save").show();
+        $(eid + " .cancle").show();
         return false;
     });
 
     //save button
-    $(".net-action .save").click(function() {
+    $(".os-action .save").click(function() {
         eid = "#" + $(this).parent().attr("data-id");
         tr = $(eid);
-        net_name = $(eid + " input.net_name").val();
+        os_name = $(eid + " input.os_name").val();
         $.ajax({
             type: "POST",
             url: tr.attr("data-edit-url"),
-            data: "name=" + net_name,
+            data: "name=" + os_name,
             dataType: "json",
             success: function(ret){
                 if(ret.status) {
-                    $(eid + " span.net_name").html(ret.net_name);
-                    $(eid + " input.net_name").val(ret.net_name);
+                    $(eid + " span.os_name").html(ret.os_name);
+                    $(eid + " input.os_name").val(ret.os_name);
                 } else {
                     alert("error");
                 }
 
-                $(".net-action .cancle").click();
+                $(".os-action .cancle").click();
             }
         });
 
@@ -64,7 +64,7 @@ $(document).ready(function() {
     });
 
     //cancle button
-    $(".net-action .cancle").click(function() {
+    $(".os-action .cancle").click(function() {
         id = "#" + $(this).parent().attr("data-id");
         $(id + " input").hide();
         $(id + " .save").hide();
@@ -76,7 +76,7 @@ $(document).ready(function() {
     });
 
     //delete button
-    $(".net-action .remove").click(function() {
+    $(".os-action .remove").click(function() {
         return confirm("你确认要删除吗！");
     });
 });

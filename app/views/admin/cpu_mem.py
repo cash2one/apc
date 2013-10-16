@@ -7,8 +7,8 @@ from operator import itemgetter, attrgetter
 from app import app, db
 from app.models import *
 
-
 mod = Blueprint('cpu_mem', __name__, url_prefix='/admin/cpu_mem')
+
 
 @mod.route('/', methods=['GET'])
 def index():

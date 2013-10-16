@@ -43,6 +43,7 @@ def load_user(userid):
 #
 from app.views import general
 from app.views import buy
+from app.views import sunstone_api
 from app.views.admin import index
 from app.views.admin import idc
 from app.views.admin import cpu_mem
@@ -50,6 +51,7 @@ from app.views.admin import network
 from app.views.admin import osimage
 
 app.register_blueprint(buy.mod)
+app.register_blueprint(sunstone_api.mod)
 app.register_blueprint(index.mod)
 app.register_blueprint(idc.mod)
 app.register_blueprint(cpu_mem.mod)

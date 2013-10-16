@@ -8,24 +8,21 @@ from app.models import *
 
 class APC:
 
-    def __init__(self):
-        pass
+    def __init__(self, idc):
+        self.idc = idc
 
 
     def vnet_sunstone(self):
         ret = []
 
-        for idc in IDC.query.all():
-            sunstone = Sunstone(idc)
-            data = json.loads(sunstone.vnet().data)
+        sunstone = Sunstone(self.idc)
+        data = json.loads(sunstone.vnet().data)
 
-            for vnet in data['VNET_POOL']['VNET']:
-                ele = {}
-                ele['idc_id'] = int(idc.id)
-                ele['idc_name'] = str(idc.name)
-                ele['sunstone_id'] = int(vnet['ID'])
-                ele['sunstone_name'] = vnet['NAME']
-                ret.append(ele)
+        for vnet in data['VNET_POOL']['VNET']:
+            ele = {}
+            ele['sunstone_id'] = int(vnet['ID'])
+            ele['sunstone_name'] = vnet['NAME']
+            ret.append(ele)
 
         return ret
 
@@ -33,16 +30,13 @@ class APC:
     def image_sunstone(self):
         ret = []
 
-        for idc in IDC.query.all():
-            sunstone = Sunstone(idc)
-            data = json.loads(sunstone.image().data)
+        sunstone = Sunstone(self.idc)
+        data = json.loads(sunstone.image().data)
 
-            for image in data['IMAGE_POOL']['IMAGE']:
-                ele = {}
-                ele['idc_id'] = int(idc.id)
-                ele['idc_name'] = str(idc.name)
-                ele['sunstone_id'] = int(image['ID'])
-                ele['sunstone_name'] = image['NAME']
-                ret.append(ele)
+        for image in data['IMAGE_POOL']['IMAGE']:
+            ele = {}
+            ele['sunstone_id'] = int(image['ID'])
+            ele['sunstone_name'] = image['NAME']
+            ret.append(ele)
 
         return ret

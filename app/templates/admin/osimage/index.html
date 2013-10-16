@@ -1,20 +1,27 @@
 {% extends 'admin/network/layout.html' %}
 
+{% block addon_head %}
+<script src="{{ url_for('static',filename='js/admin/osimage.js') }}"></script>
+{% endblock %}
+
 {% block region %}
-<form class="form-inline">
+<form class="form-inline" method="POST" action="{{ url_for('osimage.add') }}">
     <fieldset>
         <legend>镜像管理</legend>
         <div class="text-right">
-            <select class="span2">
-                <option>IDC10</option>
-                <option>IDC20</option>
-            </select>
-            <select class="span3">
-                <option>Redhat 5.8</option>
-                <option>Ubuntu 12.04</option>
-            </select>
-            <input type="text" class="span3"/>
-            <a class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</a>
+            <span class="text-left">
+                {{ form.hidden_tag() }}
+                {{ form.csrf }}
+                <select class="span2" id="idc_id" name="idc_id">
+                    {% for i in idc %}
+                    <option data-api-url="{{ url_for('sunstone.image', idc_id=i.id) }}" value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" class="span3" id="sunstone_name" name="sunstone_name" placeholder="sunstone name" autocomplete="off"/>
+                <input type="hidden" class="span3" id="sunstone_id" name="sunstone_id"/>
+                <input type="text" class="span3" id="name" name="name" placeholder="name"/>
+                <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
+            <span>
         </div>
     </fieldset>
 </form>
@@ -22,21 +29,33 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>IDC</th>
-            <th>Sunstone ID</th>
-            <th>Sunstone Name</th>
-            <th>操作</th>
+            <th width="50">IDC</th>
+            <th width="100" align="right">Sunstone ID</th>
+            <th width="230">Sunstone Name</th>
+            <th>名称</th>
+            <th width="50">操作</th>
         </tr>
     </thead>
     <tbody>
-        {% for i in image %}
+        {% if osimage.__len__() == 0 %}
         <tr>
-            <td>{{ i.idc_name }}</td>
+            <td colspan="5">Null</td>
+        </tr>
+        {% endif %}
+        {% for i in osimage %}
+        <tr id="os_{{ i.id }}" data-edit-url="{{ url_for('osimage.edit', osimage_id=i.id) }}">
+            <td>{{ idc_dict[i.idc_id].name }}</td>
             <td>{{ i.id }}</td>
-            <td>{{ i.name }}</td>
+            <td>{{ i.sunstone_name }}</td>
             <td>
-                <a href=""><i class="icon-edit"></i></a>
-                <a href=""><i class="icon-remove"></i></a>
+                <span class="os_name">{{ i.name }}</span>
+                <input class="os_name hide" value="{{ i.name }}"/>
+            </td>
+            <td class="os-action" data-id="os_{{ i.id }}">
+                <a class="edit" href=""><i class="icon-edit"></i></a>
+                <a class="remove" href="{{ url_for('osimage.delete', osimage_id=i.id) }}"><i class="icon-remove"></i></a>
+                <a class="save hide" href="#"><i class="icon-ok"></i></a>
+                <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
             </td>
         </tr>
         {% endfor %}

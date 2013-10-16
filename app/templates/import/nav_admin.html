@@ -1,14 +1,15 @@
 {% macro nav_admin(view) %}
 <script type="text/javascript">
 $(document).ready(function() {
+
 });
 </script>
 
 <div class="block">
-    <h2>虚拟机配置</h2>
+    <h2>基础设施</h2>
     <ul>
-        <li><a href="{{ url_for('idc.index') }}">IDC管理</a></li>
-        <li><a href="{{ url_for('cpu_mem.index') }}">虚拟机方案</a></li>
+        <li><a href="{{ url_for('idc.index') }}">IDC</a></li>
+        <li><a href="{{ url_for('cpu_mem.index') }}">CPU/Memory方案</a></li>
         <li><a href="{{ url_for('network.index') }}">网络</a></li>
         <li><a href="{{ url_for('osimage.index') }}">OS镜像</a></li>
     </ul>

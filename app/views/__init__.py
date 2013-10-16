@@ -14,3 +14,17 @@ def check_load_network(func):
         network = Network.query.get_or_404(kvargs['network_id'])
         return func(network=network, **kvargs)
     return wrapper
+
+def check_load_idc(func):
+    @wraps(func)
+    def wrapper(**kvargs):
+        idc = IDC.query.get_or_404(kvargs['idc_id'])
+        return func(idc=idc, **kvargs)
+    return wrapper
+
+def check_load_osimage(func):
+    @wraps(func)
+    def wrapper(**kvargs):
+        osimage = OS_Image.query.get_or_404(kvargs['osimage_id'])
+        return func(osimage=osimage, **kvargs)
+    return wrapper
