@@ -13,3 +13,9 @@ def http_req(host, uri, method='GET', params='', headers=''):
     resp.data = resp.read()
 
     return resp
+
+
+def get_form_errors(form):
+    arr = [' '.join(form.errors[k]) for k in form.errors.keys()]
+    msg = ' '.join(arr)
+    return msg

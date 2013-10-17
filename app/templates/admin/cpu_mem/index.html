@@ -1,40 +1,57 @@
 {% extends 'admin/cpu_mem/layout.html' %}
 
-{% block content_tab %}
-<div class="span8">
-<!--add-->
-<div class="row-fluid" id="addForm">
-    <div class="pull-right">
-        <form class="form-inline">
-            <input type="text" placeholder="CPU" id="add_cpu" class="input-mini" />
-            &nbsp;&nbsp; &nbsp;&nbsp;
-            <input type="text" placeholder="MEM" id="add_mem" class="input-mini" />
-            &nbsp;&nbsp;
-            <a class="btn btn-primary btn-small" href="javascript:void(0)"><i class="icon-plus icon-white"></i>&nbsp;Add</a>
-        </form>
-    </div>
-</div>
 
-<!--cpu_mem table-->
-<div id="cpu_mem_table">
-<div class="row-fluid table-head">
-    <div class="span3"><strong>ID</strong></div>
-    <div class="span4"><strong>CPU</strong>&nbsp;(Cores)</div>
-    <div class="span3"><strong>MEM</strong>&nbsp;(G)</div>
-</div>
-
-{% for row in rows %}
-<div class="row-fluid table-row">
-    <div class="span3"><em>{{ row.id }}</em></div>
-    <div class="span4"><font color="#009900">{{ row.cpu }}</font></div>
-    <div class="span3"><font color="#009900">{{ row.mem }}</font></div>
-</div>
-{% endfor %}
-</div>
-
-</div>
-<script src="{{ url_for('static',filename='js/cpu_mem.js') }}"></script>
+{% block addon_head %}
+<script src="{{ url_for('static',filename='js/admin/cpu_mem.js') }}"></script>
+{% endblock %}
 
 
+{% block region %}
+<form class="form-inline" action="{{ url_for('cpu_mem.add') }}" method="POST">
+    <fieldset>
+        <legend>CPU/内存方案管理</legend>
+        <div class="pull-right">
+            <span class="text-left">
+                {{ form.hidden_tag() }}
+                {{ form.csrf }}
+                <input type="text" placeholder="CPU" id="cpu" name="cpu" class="input-mini"/>
+                <input type="text" placeholder="MEM" id="mem" name="mem" class="input-mini"/>
+                <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
+            </span>
+        </div>
+    </fieldset>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><font color="gray">#</font></th>
+            <th>CPU&nbsp;(Cores)</th>
+            <th>MEM&nbsp;(G)</th>
+            <th width="50">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in cpu_mem %}
+        <tr id="cpumem_{{ c.id }}" data-edit-url="{{ url_for('cpu_mem.edit', cpumem_id=c.id) }}">
+            <td><font color="gray">{{ c.id }}</font></td>
+            <td>
+                <span class="cpu">{{ c.cpu }}</span>
+                <input class="hide cpu input-mini" value="{{ c.cpu }}"/>
+            </td>
+            <td>
+                <span class="mem">{{ c.mem }}</span>
+                <input class="hide mem input-mini" value="{{ c.mem }}"/>
+            </td>
+            <td class="cpumem-action" data-id="cpumem_{{ c.id }}">
+                <a class="edit" href="#"><i class="icon-edit"></i></a>
+                <a class="remove" href="{{ url_for('cpu_mem.delete', cpumem_id=c.id) }}"><i class="icon-remove"></i></a>
+                <a class="save hide" href="#"><i class="icon-ok"></i></a>
+                <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 

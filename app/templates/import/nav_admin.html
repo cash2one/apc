@@ -1,17 +1,18 @@
 {% macro nav_admin(view) %}
 <script type="text/javascript">
 $(document).ready(function() {
-
+    $("#nav_{{ view }}").addClass("active");
 });
 </script>
 
 <div class="block">
     <h2>基础设施</h2>
     <ul>
-        <li><a href="{{ url_for('idc.index') }}">IDC</a></li>
-        <li><a href="{{ url_for('cpu_mem.index') }}">CPU/Memory方案</a></li>
-        <li><a href="{{ url_for('network.index') }}">网络</a></li>
-        <li><a href="{{ url_for('osimage.index') }}">OS镜像</a></li>
+        <li id="nav_idc"><a href="{{ url_for('idc.index') }}">IDC</a></li>
+        <li id="nav_cluster"><a href="#">Cluster</a></li>
+        <li id="nav_cpu_mem"><a href="{{ url_for('cpu_mem.index') }}">CPU/Memory</a></li>
+        <li id="nav_network"><a href="{{ url_for('network.index') }}">网络</a></li>
+        <li id="nav_osimage"><a href="{{ url_for('osimage.index') }}">OS镜像</a></li>
     </ul>
 </div>
 

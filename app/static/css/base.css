@@ -11,6 +11,13 @@ body {
     min-height: 600px;
 }
 
+#message {
+    display: none;
+    position: fixed;
+    top: 45px;
+    width: 100%;
+}
+
 .footer {
     background-color: #F5F5F5;
     border-top: 1px solid #E5E5E5;

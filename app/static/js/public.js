@@ -1,7 +1,7 @@
-function hide_msg() {
-    $("#message").slideUp();
+function flash(message, category) {
+    $.globalMessenger().post({
+        message: message,
+        type: category,
+        showCloseButton: true
+    });
 }
-
-$(document).ready(function() {
-    window.setTimeout(hide_msg, 3000);
-});

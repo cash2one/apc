@@ -50,7 +50,7 @@ def add():
     return redirect(url_for('.index'))
 
 
-@mod.route('/<network_id>/edit',  methods=['GET', 'POST'])
+@mod.route('/<int:network_id>/edit',  methods=['GET', 'POST'])
 @check_load_network
 def edit(network, **kvargs):
     ret = {}
@@ -73,7 +73,7 @@ def edit(network, **kvargs):
     return json.dumps(ret)
 
 
-@mod.route('/<network_id>/delete')
+@mod.route('/<int:network_id>/delete')
 @check_load_network
 def delete(network, **kvargs):
     db.session.delete(network)

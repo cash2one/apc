@@ -1,20 +1,6 @@
-{% extends 'layout.html' %}
+{% extends 'admin/layout.html' %}
 
-{% block nav %}
-{% from 'import/nav.html' import nav %}
-{{ nav(current_user, '') }}
+{% block sidebar %}
+{% from 'import/nav_admin.html' import nav_admin %}
+{{ nav_admin('cpu_mem') }}
 {% endblock %}
-
-{% block content_body %}
-{% from 'import/nav_inner.html' import nav_inner %}
-{{ nav_inner('cpu_mem') }}
-
-<div class="tab-content">
-    <div class="tab-pane active">
-        {% block content_tab %}
-        {% endblock %}
-    </div>
-</div>
-
-{% endblock %}
-
