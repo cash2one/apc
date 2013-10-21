@@ -15,6 +15,13 @@ def check_load_idc(func):
         return func(idc=idc, **kvargs)
     return wrapper
 
+def check_load_cluster(func):
+    @wraps(func)
+    def wrapper(**kvargs):
+        cluster = Cluster.query.get_or_404(kvargs['cluster_id'])
+        return func(cluster=cluster, **kvargs)
+    return wrapper
+
 def check_load_network(func):
     @wraps(func)
     def wrapper(**kvargs):

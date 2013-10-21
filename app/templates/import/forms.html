@@ -1,0 +1,46 @@
+{% macro error(msg, class='') %}
+    {% if msg %}
+    <span class="{{ class }} help-inline label label-important">
+        {{ msg[0] }}
+    </span>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro field(form, name, eclass='', gclass='', autocomplete='') %}
+<div class="control-group {{ gclass }}">
+    {{ form[name].label(class="control-label") }}
+    <div class="controls">
+        {% if(autocomplete!='') %}
+            {{ form[name](class=eclass, autocomplete=autocomplete) }}
+        {% else %}
+            {{ form[name](class=eclass) }}
+        {% endif %}
+        {{ error(form.errors[name]) }}
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro cluster_form(form, legend, url, submit, cancle_url) %}
+<form class="form-horizontal" action="{{ url }}" method="POST">
+    <legend>{{ legend }}</legend>
+
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    {{ field(form, 'idc_id') }}
+    {{ field(form, 'name') }}
+    {{ field(form, 'host') }}
+    {{ field(form, 'occi_api') }}
+    {{ field(form, 'sunstone_api') }}
+    {{ field(form, 'api_auth') }}
+    {{ field(form, 'ds_id', gclass='hide') }}
+    {{ field(form, 'ds_name', autocomplete='off') }}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{{ submit }}</button>
+        <a class="btn" href="{{ cancle_url }}">取消</a>
+    </div>
+</form>
+{% endmacro %}

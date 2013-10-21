@@ -9,7 +9,7 @@ $(document).ready(function() {
     <h2>基础设施</h2>
     <ul>
         <li id="nav_idc"><a href="{{ url_for('idc.index') }}">IDC</a></li>
-        <li id="nav_cluster"><a href="#">Cluster</a></li>
+        <li id="nav_cluster"><a href="{{ url_for('cluster.index') }}">Cluster</a></li>
         <li id="nav_cpu_mem"><a href="{{ url_for('cpu_mem.index') }}">CPU/Memory</a></li>
         <li id="nav_network"><a href="{{ url_for('network.index') }}">网络</a></li>
         <li id="nav_osimage"><a href="{{ url_for('osimage.index') }}">OS镜像</a></li>

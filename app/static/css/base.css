@@ -31,7 +31,7 @@ body {
  * Sidebar Nav
  */
 #sidebar .block {
-    border: 1px solid #EEE;
+    border: 1px solid #e5e6e6;
     border-radius: 6px 6px 0 0;
     margin-bottom: 20px;
 }
@@ -40,7 +40,7 @@ body {
     font-size: 14px;
     margin: 0;
     padding: 0 15px;
-    background-color: #EEE;
+    background-color: #e5e6e6;
 }
 
 #sidebar ul {
@@ -59,9 +59,12 @@ body {
 }
 
 #sidebar li a:hover {
-    background-color: #EEE;
+    color: black;
 }
 
+#sidebar li.active a {
+    color: black;
+}
 
 /*
  * Overwrite bootstrap CSS
@@ -72,6 +75,10 @@ body {
 
 .table th, .table td {
     vertical-align: middle;
+}
+
+legend a {
+    font-size: 14px;
 }
 
 

@@ -25,13 +25,18 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="10%"><font color="gray">#</font></td>
-            <th width="40%">名称</td>
-            <th width="40%">中文名</td>
-            <th width="10%">操作</td>
+            <th width="10%"><font color="gray">#</font></th>
+            <th width="40%">名称</th>
+            <th width="40%">中文名</th>
+            <th width="10%">操作</th>
         </tr>
     </thead>
     <tbody>
+        {% if idc.__len__() == 0 %}
+        <tr>
+            <td colspan="5">Null</td>
+        </tr>
+        {% endif %}
         {% for i in idc %}
         <tr id="idc_{{ i.id }}" data-edit-url="{{ url_for('idc.edit', idc_id=i.id) }}">
             <td><font color="gray">{{ i.id }}</font></td>
@@ -43,7 +48,7 @@
                 <span class="cname">{{ i.chinese_name }}</span>
                 <input class="hide cname" value="{{ i.chinese_name }}"/>
             </td>
-            <td class='action' data-trid="idc_{{ i.id }}">
+            <td class="action" data-trid="idc_{{ i.id }}">
                 <a class="edit" href="#"><i class="icon-edit"></i></a>
                 <a class="remove" href="{{ url_for('idc.delete', idc_id=i.id) }}"><i class="icon-remove"></i></a>
                 <a class="save hide" href="#"><i class="icon-ok"></i></a>

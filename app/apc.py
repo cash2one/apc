@@ -8,14 +8,14 @@ from app.models import *
 
 class APC:
 
-    def __init__(self, idc):
-        self.idc = idc
+    def __init__(self, cluster):
+        self.cluster = cluster
 
 
     def vnet_sunstone(self):
         ret = []
 
-        sunstone = Sunstone(self.idc)
+        sunstone = Sunstone(self.cluster)
         data = json.loads(sunstone.vnet().data)
 
         for vnet in data['VNET_POOL']['VNET']:
@@ -30,13 +30,28 @@ class APC:
     def image_sunstone(self):
         ret = []
 
-        sunstone = Sunstone(self.idc)
+        sunstone = Sunstone(self.cluster)
         data = json.loads(sunstone.image().data)
 
         for image in data['IMAGE_POOL']['IMAGE']:
             ele = {}
             ele['sunstone_id'] = int(image['ID'])
             ele['sunstone_name'] = image['NAME']
+            ret.append(ele)
+
+        return ret
+
+
+    def datastore_sunstone(self):
+        ret = []
+
+        sunstone = Sunstone(self.cluster)
+        data = json.loads(sunstone.datastore().data)
+
+        for datastore in data['DATASTORE_POOL']['DATASTORE']:
+            ele = {}
+            ele['sunstone_id'] = int(datastore['ID'])
+            ele['sunstone_name'] = datastore['NAME']
             ret.append(ele)
 
         return ret

@@ -65,7 +65,7 @@ def edit(idc, **kvargs):
     return json.dumps(ret)
 
 
-@mod.route('/<int:idc_id>/delete', methods=['GET', '[POST'])
+@mod.route('/<int:idc_id>/delete', methods=['GET', 'POST'])
 @check_load_idc
 def delete(idc, **kvargs):
     ret = {}
@@ -83,5 +83,5 @@ def delete(idc, **kvargs):
 
 
 class IDCForm(Form):
-    name = TextField(u'名称', validators = [Required(message=u"名称不能为空"), length(max=20, message=u"名称最大长度20字节")])
-    chinese_name = TextField(u'中文名称', validators = [length(max=20, message=u"中文名最大长度20字节")])
+    name = TextField(u'名称', validators=[Required(message=u"名称不能为空"), length(max=20, message=u"名称最大长度20字节")])
+    chinese_name = TextField(u'中文名称', validators=[length(max=20, message=u"中文名最大长度20字节")])

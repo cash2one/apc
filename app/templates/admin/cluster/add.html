@@ -1,0 +1,13 @@
+{% extends 'admin/cluster/layout.html' %}
+
+{% block addon_head %}
+<script src="{{ url_for('static',filename='js/admin/cluster_add_edit.js') }}"></script>
+<script type="text/javascript">
+    datastore_api = "{{ url_for('sunstone.datastore_live') }}";
+</script>
+{% endblock %}
+
+{% block region %}
+{% from 'import/forms.html' import cluster_form %}
+{{ cluster_form(form, '添加集群', url_for('cluster.add'), '添加', url_for('cluster.index')) }}
+{% endblock %}

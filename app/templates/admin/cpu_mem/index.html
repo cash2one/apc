@@ -25,13 +25,18 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th><font color="gray">#</font></th>
-            <th>CPU&nbsp;(Cores)</th>
-            <th>MEM&nbsp;(G)</th>
-            <th width="50">操作</th>
+            <th width="24%"><font color="gray">#</font></th>
+            <th width="33%">CPU&nbsp;(Cores)</th>
+            <th width="33%">MEM&nbsp;(G)</th>
+            <th width="10%">操作</th>
         </tr>
     </thead>
     <tbody>
+        {% if cpu_mem.__len__() == 0 %}
+        <tr>
+            <td colspan="4">Null</td>
+        </tr>
+        {% endif %}
         {% for c in cpu_mem %}
         <tr id="cpumem_{{ c.id }}" data-edit-url="{{ url_for('cpu_mem.edit', cpumem_id=c.id) }}">
             <td><font color="gray">{{ c.id }}</font></td>

@@ -62,16 +62,18 @@ class Cluster(db.Model):
     occi_api = Column(String(256))
     sunstone_api = Column(String(256))
     api_auth = Column(String(256))
-    datastore = Column(String(256))
+    ds_id = Column(Integer)
+    ds_name = Column(String(256))
 
-    def __init__(self, idc_id, name, host, occi_api, sunstone_api, api_auth, datastore):
+    def __init__(self, idc_id, name, host, occi_api, sunstone_api, api_auth, ds_id, ds_name):
         self.idc_id = idc_id
         self.name = name
         self.host = host
         self.occi_api = occi_api
         self.sunstone_api = sunstone_api
         self.api_auth = api_auth
-        self.datastore = datastore
+        self.ds_id = ds_id
+        self.ds_name = ds_name
 
     def __repr__(self):
         return '<Cluster %r>' % self.name
@@ -94,14 +96,14 @@ class CPU_Mem(db.Model):
 class Network(db.Model):
     __tablename__ = "network"
     id = Column(Integer, primary_key=True)
-    idc_id = Column(Integer)
+    cluster_id = Column(Integer)
     sunstone_id = Column(Integer)
     sunstone_name = Column(String(256))
     name = Column(String(256))
     if_default = Column(Integer)
 
-    def __init__(self, idc_id, sunstone_id, sunstone_name, name, if_default):
-        self.idc_id = idc_id
+    def __init__(self, cluster_id, sunstone_id, sunstone_name, name, if_default):
+        self.cluster_id = cluster_id
         self.sunstone_id = sunstone_id
         self.sunstone_name = sunstone_name
         self.name = name
@@ -114,14 +116,14 @@ class Network(db.Model):
 class OS_Image(db.Model):
     __tablename__ = "os_image"
     id = Column(Integer, primary_key=True)
-    idc_id = Column(Integer)
+    cluster_id = Column(Integer)
     sunstone_id = Column(Integer)
     sunstone_name = Column(String(256))
     name = Column(String(256))
     if_default = Column(Integer)
 
-    def __init__(self, idc_id, sunstone_id, sunstone_name, name, if_default):
-        self.idc_id = idc_id
+    def __init__(self, cluster_id, sunstone_id, sunstone_name, name, if_default):
+        self.cluster_id = cluster_id
         self.sunstone_id = sunstone_id
         self.sunstone_name = sunstone_name
         self.name = name

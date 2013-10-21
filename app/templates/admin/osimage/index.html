@@ -1,8 +1,10 @@
-{% extends 'admin/network/layout.html' %}
+{% extends 'admin/osimage/layout.html' %}
+
 
 {% block addon_head %}
 <script src="{{ url_for('static',filename='js/admin/osimage.js') }}"></script>
 {% endblock %}
+
 
 {% block region %}
 <form class="form-inline" method="POST" action="{{ url_for('osimage.add') }}">
@@ -12,14 +14,14 @@
             <span class="text-left">
                 {{ form.hidden_tag() }}
                 {{ form.csrf }}
-                <select class="span2" id="idc_id" name="idc_id">
-                    {% for i in idc %}
-                    <option data-api-url="{{ url_for('sunstone.image', idc_id=i.id) }}" value="{{ i.id }}">{{ i.name }}</option>
+                <select class="input-medium" id="cluster_id" name="cluster_id">
+                    {% for c in cluster %}
+                    <option data-api-url="{{ url_for('sunstone.image', cluster_id=c.id) }}" value="{{ c.id }}">{{ c.name }}</option>
                     {% endfor %}
                 </select>
-                <input type="text" class="span3" id="sunstone_name" name="sunstone_name" placeholder="sunstone name" autocomplete="off"/>
-                <input type="hidden" class="span3" id="sunstone_id" name="sunstone_id"/>
-                <input type="text" class="span3" id="name" name="name" placeholder="name"/>
+                <input type="text" class="input-medium" id="sunstone_name" name="sunstone_name" placeholder="sunstone name" autocomplete="off"/>
+                <input type="hidden" class="input-medium" id="sunstone_id" name="sunstone_id"/>
+                <input type="text" class="input-medium" id="name" name="name" placeholder="name"/>
                 <button type="submit" class="btn btn-primary"><i class="icon-plus icon-white"></i>添加</button>
             <span>
         </div>
@@ -29,11 +31,11 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="50">IDC</th>
-            <th width="100" align="right">Sunstone ID</th>
-            <th width="230">Sunstone Name</th>
-            <th>名称</th>
-            <th width="50">操作</th>
+            <th width="20%">集群</th>
+            <th width="20%" class="hide">Sunstone ID</th>
+            <th width="35%">Sunstone Name</th>
+            <th width="35%">名称</th>
+            <th width="10%">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -44,14 +46,14 @@
         {% endif %}
         {% for i in osimage %}
         <tr id="os_{{ i.id }}" data-edit-url="{{ url_for('osimage.edit', osimage_id=i.id) }}">
-            <td>{{ idc_dict[i.idc_id].name }}</td>
-            <td>{{ i.id }}</td>
+            <td>{{ cluster_dict[i.cluster_id].name }}</td>
+            <td class="hide">{{ i.sunstone_id }}</td>
             <td>{{ i.sunstone_name }}</td>
             <td>
                 <span class="os_name">{{ i.name }}</span>
                 <input class="os_name hide" value="{{ i.name }}"/>
             </td>
-            <td class="os-action" data-id="os_{{ i.id }}">
+            <td class="action" data-trid="os_{{ i.id }}">
                 <a class="edit" href=""><i class="icon-edit"></i></a>
                 <a class="remove" href="{{ url_for('osimage.delete', osimage_id=i.id) }}"><i class="icon-remove"></i></a>
                 <a class="save hide" href="#"><i class="icon-ok"></i></a>
