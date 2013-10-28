@@ -2,7 +2,7 @@
 
 
 {% block addon_head %}
-<script src="{{ url_for('static',filename='js/admin/cluster.js') }}"></script>
+<script src="{{ url_for('custom_static',filename='admin/cluster/index.js') }}"></script>
 {% endblock %}
 
 
@@ -33,7 +33,7 @@
         {% for c in cluster %}
         <tr id="cluster_{{ c.id }}">
             <td><font color="gray">{{ c.id }}</font></td>
-            <td>{{ idc_dict[c.idc_id].name }}</td>
+            <td>{{ c.idc.name }}</td>
             <td>{{ c.name }}</td>
             <td class="action" data-trid="cluster_{{ c.id }}">
                 <a class="edit" href="{{ url_for('cluster.edit', cluster_id=c.id) }}"><i class="icon-edit"></i></a>

@@ -19,3 +19,9 @@ REQUEST_TOKEN_URL = AUTH_URL + '/authorize.php?client_id=' + AUTH_ID + '&respons
 ACCESS_TOKEN_URL = AUTH_URL + '/token.php?client_id=' + AUTH_ID + '&client_secret=' + AUTH_SECRET + '&grant_type=authorization_code&code=%s'
 RESOURCE_URL = AUTH_URL + '/resource.php'
 LOGOUT_URL = AUTH_URL + '/logout.php?client_id=' + AUTH_ID + '&client_secret=' + AUTH_SECRET
+
+
+# Status Config
+ORDER_STATUS = {
+    0: {'label':u'审核中', 'class':u'label-info'},
+}

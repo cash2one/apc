@@ -2,7 +2,7 @@
 
 
 {% block addon_head %}
-<script src="{{ url_for('static',filename='js/admin/osimage.js') }}"></script>
+<script src="{{ url_for('custom_static',filename='admin/osimage/index.js') }}"></script>
 {% endblock %}
 
 
@@ -46,7 +46,7 @@
         {% endif %}
         {% for i in osimage %}
         <tr id="os_{{ i.id }}" data-edit-url="{{ url_for('osimage.edit', osimage_id=i.id) }}">
-            <td>{{ cluster_dict[i.cluster_id].name }}</td>
+            <td>{{ i.cluster.name }}</td>
             <td class="hide">{{ i.sunstone_id }}</td>
             <td>{{ i.sunstone_name }}</td>
             <td>

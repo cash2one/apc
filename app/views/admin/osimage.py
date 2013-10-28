@@ -19,9 +19,8 @@ def index():
     form.cluster_id.choices = [(c.id, c.name) for c in Cluster.query.all()]
     osimage = OS_Image.query.all()
     cluster = Cluster.query.all()
-    cluster_dict = cluster2dict()
 
-    return render_template('admin/osimage/index.html', cluster=cluster, cluster_dict=cluster_dict, osimage=osimage, form=form)
+    return render_template('admin/osimage/index.html', cluster=cluster, osimage=osimage, form=form)
 
 
 @mod.route('/add', methods=['POST'])

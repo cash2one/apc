@@ -42,3 +42,10 @@ def check_load_cpumem(func):
         cpumem = CPU_Mem.query.get_or_404(kvargs['cpumem_id'])
         return func(cpumem=cpumem, **kvargs)
     return wrapper
+
+def check_load_order(func):
+    @wraps(func)
+    def wrapper(**kvargs):
+        order = Orders.query.get_or_404(kvargs['order_id'])
+        return func(order=order, **kvargs)
+    return wrapper

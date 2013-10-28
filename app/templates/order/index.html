@@ -1,0 +1,105 @@
+{% extends 'order/layout.html' %}
+
+{% from 'import/forms.html' import field %}
+
+{% block addon_head %}
+<link href="{{ url_for('custom_static', filename='order/index.css') }}" rel="stylesheet">
+<script src="{{ url_for('custom_static', filename='order/index.js') }}"></script>
+{% endblock %}
+
+{% block content_body %}
+<br/>
+<form class="form-horizontal" method="POST" action="{{ url_for('order.new') }}">
+    {{ form.hidden_tag() }}
+    {{ form.csrf }}
+
+    {{ field(form, 'cluster_id') }}
+
+    {{ field(form, 'cpu', gclass='hide') }}
+    <div class="control-group">
+        <label class="control-label">CPU</label>
+        <div class="controls">
+            {% for c in cpu %}
+            <button type="button" class="btn btn-cpu" value="{{ c.cpu }}" data-mem-api="{{ url_for('api.mem_scheme') }}">{{ c.cpu }}核</button>
+            {% endfor %}
+        </div>
+    </div>
+
+    {{ field(form, 'mem', gclass='hide') }}
+    <div class="control-group" id="group-mem">
+        <label class="control-label">内存</label>
+        <div id="mem-template" class="hide">
+            <button type="button" class="btn btn-mem" value="{mem}">{mem}G</button>
+        </div>
+        <div class="controls">
+        </div>
+    </div>
+
+    {{ field(form, 'network', gclass='hide') }}
+    <div class="control-group">
+        <label class="control-label">网卡</label>
+        <div class="controls pdt-5">
+            <div id="nic-label-template" class="hide">
+                <span class="label label-info" value="{value}">{label}&nbsp;<a class="close">X</a></span>
+            </div>
+            <div id="nic-label"></div>
+            <select id="nic-template" name="nic-template" class="hide">
+                <option value="{value}">{label}</option>
+            </select>
+            <select id="nic-option" name="nic-option" data-api="{{ url_for('api.network') }}">
+            </select>
+            <button id="nic-add-btn" type="button" class="btn">添加</button>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label">系统盘</label>
+        <div class="controls pdt-5">
+            <p>30GB（免费赠送）</p>
+        </div>
+    </div>
+
+    {{ field(form, 'disk', gclass='hide') }}
+    <div class="control-group" id="group-disk">
+        <label class="control-label">数据盘</label>
+        <div class="controls pdt-5">
+            <div id="disk-label-template" class="hide">
+                <span class="label label-info" value="{disksize}">{disksize}G&nbsp;&nbsp;<a class="close">X</a></span>
+            </div>
+            <div id="disk-label"></div>
+            <div id="disk-slider" class="pull-left"></div>
+            <div class="input-append pull-left" id="disk-input-group">
+                <input class="input-mini" id="disk-input" type="text">
+                <span class="add-on">GB</span>
+            </div>
+            <button id="disk-add-btn" type="button" class="btn">添加</button>
+        </div>
+    </div>
+
+    <div class="control-group group-os">
+        <label class="control-label">操作系统</label>
+        <div class="controls">
+            <select id="os-template" name="os-template" class="hide">
+                <option value="{value}">{label}</option>
+            </select>
+            <select id="os-id" name="os-id" data-api="{{ url_for('api.osimage') }}">
+            </select>
+        </div>
+    </div>
+
+    {{ field(form, 'cnt') }}
+    {{ field(form, 'desc') }}
+
+    <div class="control-group">
+        <label class="control-label">价格</label>
+        <div class="controls pdt-5">
+            <font id="price" color="red"><b>324</b>&nbsp;元/月</font>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-large btn-primary">提交</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -17,8 +17,7 @@ mod = Blueprint('cluster', __name__, url_prefix='/admin/cluster')
 def index():
     form = ClusterForm()
     cluster = Cluster.query.order_by(Cluster.name.asc()).all()
-    idc_dict = idc2dict()
-    return render_template('admin/cluster/index.html', form=form, cluster=cluster, idc_dict=idc_dict)
+    return render_template('admin/cluster/index.html', form=form, cluster=cluster)
 
 
 @mod.route('/add', methods=['GET', 'POST'])

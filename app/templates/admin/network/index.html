@@ -2,7 +2,7 @@
 
 
 {% block addon_head %}
-<script src="{{ url_for('static',filename='js/admin/network.js') }}"></script>
+<script src="{{ url_for('custom_static',filename='admin/network/index.js') }}"></script>
 {% endblock %}
 
 
@@ -48,7 +48,7 @@
         {% for n in vnet %}
         <tr id="net_{{ n.id }}" data-edit-url="{{ url_for('network.edit', network_id=n.id) }}">
             <td class="hide"><font color="gray">{{ n.id }}</font></td>
-            <td>{{ cluster_dict[n.cluster_id].name }}</td>
+            <td>{{ n.cluster.name }}</td>
             <td>{{ n.sunstone_id }}</td>
             <td>{{ n.sunstone_name }}</td>
             <td>

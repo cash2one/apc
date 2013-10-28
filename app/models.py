@@ -3,13 +3,17 @@
 from flask.ext.login import UserMixin
 
 from sqlalchemy import *
+from sqlalchemy.orm import relationship
+
+import datetime
 
 from app import db
 
 
 class User(UserMixin):
-    def __init__(self, id, username, chinese_name, email, role):
+    def __init__(self, id, user_id, username, chinese_name, email, role):
         self.id = id
+        self.user_id = user_id
         self.username = username
         self.chinese_name = chinese_name
         self.email = email
@@ -56,7 +60,7 @@ class IDC(db.Model):
 class Cluster(db.Model):
     __tablename__ = 'cluster'
     id = Column(Integer, primary_key=True)
-    idc_id = Column(Integer)
+    idc_id = Column(Integer, ForeignKey('idc.id'))
     name = Column(String(64))
     host = Column(String(64))
     occi_api = Column(String(256))
@@ -64,6 +68,8 @@ class Cluster(db.Model):
     api_auth = Column(String(256))
     ds_id = Column(Integer)
     ds_name = Column(String(256))
+
+    idc = relationship("IDC")
 
     def __init__(self, idc_id, name, host, occi_api, sunstone_api, api_auth, ds_id, ds_name):
         self.idc_id = idc_id
@@ -96,11 +102,13 @@ class CPU_Mem(db.Model):
 class Network(db.Model):
     __tablename__ = "network"
     id = Column(Integer, primary_key=True)
-    cluster_id = Column(Integer)
+    cluster_id = Column(Integer, ForeignKey('cluster.id'))
     sunstone_id = Column(Integer)
     sunstone_name = Column(String(256))
     name = Column(String(256))
     if_default = Column(Integer)
+
+    cluster = relationship('Cluster')
 
     def __init__(self, cluster_id, sunstone_id, sunstone_name, name, if_default):
         self.cluster_id = cluster_id
@@ -116,11 +124,13 @@ class Network(db.Model):
 class OS_Image(db.Model):
     __tablename__ = "os_image"
     id = Column(Integer, primary_key=True)
-    cluster_id = Column(Integer)
+    cluster_id = Column(Integer, ForeignKey('cluster.id'))
     sunstone_id = Column(Integer)
     sunstone_name = Column(String(256))
     name = Column(String(256))
     if_default = Column(Integer)
+
+    cluster = relationship('Cluster')
 
     def __init__(self, cluster_id, sunstone_id, sunstone_name, name, if_default):
         self.cluster_id = cluster_id
@@ -131,3 +141,38 @@ class OS_Image(db.Model):
 
     def __repr__(self):
         return '<OS %s>' % self.name
+
+
+class Orders(db.Model):
+    __tablename__ = "orders"
+    id = Column(Integer, primary_key=True)
+    cluster_id = Column(Integer, ForeignKey('cluster.id'), nullable=False)
+    cpu = Column(Integer)
+    mem = Column(Integer)
+    network = Column(String(256))
+    disk = Column(String(256))
+    os_id = Column(Integer, ForeignKey('os_image.id'))
+    cnt = Column(Integer)
+    status = Column(Integer)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    desc = Column(String(256))
+    created_time = Column(DateTime, default=datetime.datetime.now)
+
+    cluster = relationship("Cluster", )
+    user = relationship("UserDB")
+    os = relationship("OS_Image")
+
+    def __init__(self, cluster_id, cpu, mem, network, disk, os_id, cnt, status, user_id, desc):
+        self.cluster_id = cluster_id
+        self.cpu = cpu
+        self.mem = mem
+        self.network = network
+        self.disk = disk
+        self.os_id = os_id
+        self.cnt = cnt
+        self.status = status
+        self.user_id = user_id
+        self.desc = desc
+
+    def __repr__(self):
+        return '<Order %s>' % self.desc

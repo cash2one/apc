@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block nav %}
+{% from 'import/nav.html' import nav %}
+{{ nav(current_user, 'order_list') }}
+{% endblock %}
+
+{% block content_body%}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>集群</th>
+            <th>CPU</th>
+            <th>内存</th>
+            <th>系统</th>
+            <th>数量</th>
+            <th>状态</th>
+            <th>申请时间</th>
+            <th>申请人</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if order.items.__len__() == 0 %}
+        <tr>
+            <td colspan="9">Null</td>
+        </tr>
+        {% else %}
+        {% for o in order.items %}
+        <tr>
+            <td>{{ o.cluster.name }}</td>
+            <td>{{ o.cpu }}核</td>
+            <td>{{ o.mem }}G</td>
+            <td>{{ o.os.name }}</td>
+            <td>{{ o.cnt }}</td>
+            <td><span class="label {{ order_status[o.status].class }}">{{ order_status[o.status].label }}</span></td>
+            <td>{{ o.created_time.strftime("%Y-%m-%d %H:%M") }}</td>
+            <td>{{ o.user.chinese_name }}</td>
+            <td class="action">
+               <a href="{{ url_for('order.delete', order_id=o.id) }}"><i class="icon-remove"></i></a>
+               <a href="#"><i class="icon-chevron-right"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+
+{% from 'import/pagination.html' import render_pagination %}
+{{ render_pagination(order, 'order.list') }}
+{% endblock %}

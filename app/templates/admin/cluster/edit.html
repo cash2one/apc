@@ -2,10 +2,10 @@
 
 
 {% block addon_head %}
-<script src="{{ url_for('static',filename='js/admin/cluster_add_edit.js') }}"></script>
 <script type="text/javascript">
     datastore_api = "{{ url_for('sunstone.datastore_live') }}";
 </script>
+<script src="{{ url_for('custom_static',filename='admin/cluster/add_edit.js') }}"></script>
 {% endblock %}
 
 

@@ -1,0 +1,49 @@
+{% macro render_pagination(pagination, endpoint) %}
+<div class="pagination text-center">
+    <ul>
+        {% if pagination.pages == 0 %}
+            <li class="disabled"><a href="#">First</a></li>
+        {% else %}
+            {% if pagination.page == 1 %}
+                <li class="active"><a href="#">First</a></li>
+            {% else %}
+                <li><a href="{{ url_for(endpoint, page=1) }}">First</a></li>
+            {% endif %}
+        {% endif %}
+
+        {% if pagination.has_prev %}
+            <li><a href="{{ url_for(endpoint, page=pagination.prev_num) }}">&laquo;</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">&laquo;</a></li>
+        {% endif %}
+
+        {% for page in pagination.iter_pages() %}
+        {% if page %}
+            {% if page != pagination.page %}
+                <li><a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a></li>
+            {% else %}
+                <li class="active"><a href="#">{{ page }}</a></li>
+            {% endif %}
+        {% else %}
+            <li><span class=ellipsis>…</span></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+            <li><a href="{{ url_for(endpoint, page=pagination.next_num) }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">&raquo;</a></li>
+        {% endif %}
+
+        {% if pagination.pages == 0 %}
+            <li class="disabled"><a href="#">Last</a></li>
+        {% else %}
+            {% if pagination.page == pagination.pages %}
+                <li class="active"><a href="#">Last</a></li>
+            {% else %}
+                <li><a href="{{ url_for(endpoint, page=pagination.pages) }}">Last</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</div>
+{% endmacro %}

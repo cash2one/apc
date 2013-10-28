@@ -6,28 +6,29 @@ $(document).ready(function() {
 </script>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="brand" href="{{ url_for('index') }}">Anjuke Private Cloud</a>
-      <div class="nav-collapse collapse">
-        <ul class="nav">
-          <li class="dashboard" id="nav_dashboard"><a href="{{ url_for('index') }}">主面板</a></li>
-          <li class="buy" id="nav_buy"><a href="{{ url_for('buy.index') }}">购买</a></li>
-          <li class="personal"><a href="{{ url_for('buy.index') }}">个人中心</a></li>
-        </ul>
-        <ul class="nav pull-right">
-          {% if current_user.is_authenticated() %}
-          <li class="admin"><a href="{{ url_for('admin.index') }}">管理</a></li>
-          {% endif %}
-          {% if current_user.is_authenticated() %}
-          <li><a href="#">您好，{{ current_user.chinese_name }}！</a></li>
-          <li><a href="{{ url_for('logout') }}">注销</a></li>
-          {% else %}
-          <li><a href="{{ url_for('login') }}">登录</a></li>
-          {% endif %}
-        </ul>
-      </div>
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="{{ url_for('index') }}">Anjuke Private Cloud</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="dashboard" id="nav_dashboard"><a href="{{ url_for('index') }}">主面板</a></li>
+                    <li class="buy" id="nav_buy"><a href="{{ url_for('order.index') }}">购买</a></li>
+                    <li class="order_list" id="nav_order_list"><a href="{{ url_for('order.list') }}">订单</a></li>
+                </ul>
+                <ul class="nav pull-right">
+                    {% if current_user.is_authenticated() %}
+                    <li class="personal"><a href="{{ url_for('order.index') }}">个人中心</a></li>
+                    <li class="admin"><a href="{{ url_for('admin.index') }}">管理</a></li>
+                    {% endif %}
+                    {% if current_user.is_authenticated() %}
+                    <li><a href="#">您好，{{ current_user.chinese_name }}！</a></li>
+                    <li><a href="{{ url_for('logout') }}">注销</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('login') }}">登录</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endmacro %}

@@ -20,10 +20,9 @@ def index():
     form = NetworkForm()
     form.cluster_id.choices = [(i.id, i.name) for i in Cluster.query.all()]
     cluster = Cluster.query.all()
-    cluster_dict = cluster2dict()
     vnet = Network.query.all()
 
-    return render_template('admin/network/index.html', form=form, cluster=cluster, cluster_dict=cluster_dict, vnet=vnet)
+    return render_template('admin/network/index.html', form=form, cluster=cluster, vnet=vnet)
 
 
 @mod.route('/add', methods=['POST'])

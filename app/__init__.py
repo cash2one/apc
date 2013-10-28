@@ -35,14 +35,15 @@ login_manager.login_message = None
 @login_manager.user_loader
 def load_user(userid):
     userdb = UserDB.query.filter(UserDB.username==userid).first()
-    return User(userid, userdb.username, userdb.chinese_name, userdb.email, userdb.role)
+    return User(userid, userdb.id, userdb.username, userdb.chinese_name, userdb.email, userdb.role)
 
 
 #
 # Views
 #
 from app.views import general
-from app.views import buy
+from app.views import order
+from app.views import api
 from app.views import sunstone_api
 from app.views.admin import index
 from app.views.admin import idc
@@ -51,7 +52,8 @@ from app.views.admin import cpu_mem
 from app.views.admin import network
 from app.views.admin import osimage
 
-app.register_blueprint(buy.mod)
+app.register_blueprint(order.mod)
+app.register_blueprint(api.mod)
 app.register_blueprint(sunstone_api.mod)
 app.register_blueprint(index.mod)
 app.register_blueprint(idc.mod)

@@ -81,6 +81,14 @@ legend a {
     font-size: 14px;
 }
 
+.label .close {
+    float: none;
+    line-height: inherit;
+    font-size: 10px;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+}
+
 
 /*
  * Public defined CSS
