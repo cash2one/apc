@@ -37,7 +37,7 @@ def datastore(cluster, **kvargs):
 
 @mod.route('/datastore', methods=['POST'])
 def datastore_live():
-    cluster = Cluster('', '', '', '', request.form['sunstone_api'], request.form['api_auth'], '', '')
+    cluster = Cluster('', '', '', '', '', '', request.form['sunstone_api'], request.form['sunstone_auth'], '', '')
     apc = APC(cluster)
     datastore = apc.datastore_sunstone()
     return json.dumps(datastore)

@@ -6,7 +6,7 @@ $(document).ready(function() {
             $.ajax({
                 type: "POST",
                 url: datastore_api,
-                data: "sunstone_api="+ $("#sunstone_api").val()  +"&api_auth="+ $("#api_auth").val(),
+                data: "sunstone_api="+ $("#sunstone_api").val()  +"&sunstone_auth="+ $("#sunstone_auth").val(),
                 success: function(ret) {
                     $.each(eval(ret), function(i, object) {
                         map[object.sunstone_name] = object;

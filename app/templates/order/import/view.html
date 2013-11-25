@@ -1,0 +1,146 @@
+{% macro order_view(order, network_dict, form, config, current_user, personal=False) %}
+<div class="head">
+    <h3 class="pull-left">订单详情</h3>
+    <div class="pull-right">
+        {% if personal %}
+        <a href="{{ url_for('my_order.list') }}"><i class="icon-arrow-left"></i>返回</a>
+        {% else %}
+        <a href="{{ url_for('order.list') }}"><i class="icon-arrow-left"></i>返回</a>
+        {% endif %}
+        {% if order.status == 1 or order.status == 2 %}
+        <a href="{{ url_for('vm.refresh') }}"><i class="icon-refresh"></i>刷新</a>
+        {% endif %}
+        {% if order.status == 0 and current_user.role == 1 %}
+        <a href="{{ url_for('order.approve', order_id=order.id) }}"><i class="icon-ok"></i>通过</a>
+        <a href="{{ url_for('order.reject', order_id=order.id) }}"><i class="icon-ban-circle"></i>驳回</a>
+        {% endif %}
+        {% if order.status == 0 %}
+        <a href="{{ url_for('order.edit', order_id=order.id) }}"><i class="icon-edit"></i>修改</a>
+        <a href="{{ url_for('order.cancle', order_id=order.id) }}"><i class="icon-remove"></i>取消</a>
+        {% endif %}
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="row-fluid">
+    <div class="span8">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="30%">机器名</th>
+                    <th width="40%">IP</th>
+                    <th width="20%">状态</th>
+                    <th width="10%">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if order.vm.__len__() == 0 %}
+                <tr>
+                    <td colspan="4">Null</td>
+                </tr>
+                {% endif %}
+                {% for v in order.vm %}
+                <tr id="vm_{{ v.id }}">
+                    <td>
+                        <span class="hostname">{{ v.hostname }}</span>
+                        <input value="{{ v.hostname }}" class="input-small hide hostname"/>
+                    </td>
+                    <td>{{ ','.join(v.ip) }}</td>
+                    <td>{{ v.status }}</td>
+                    <td class="action" data-trid="vm_{{ v.id }}">
+                        <a class="edit" href="#"><i class="icon-edit"></i></a>
+                        <a class="remove" href="{{ url_for('vm.delete', vm_id=v.id) }}"><i class="icon-remove"></i></a>
+                        <a class="save hide" href="{{ url_for('vm.rename', vm_id=v.id) }}"><i class="icon-ok"></i></a>
+                        <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h4>评论</h4>
+        <p>To do...</p>
+    </div>
+
+    <div class="span4">
+        <table width="100%" class="detail">
+            <tr>
+                <td width="30%" class="name">{{ form['desc'].label }}</td>
+                <td width="70%">{{ order.desc }}</td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['cluster_id'].label }}</td>
+                <td>{{ order.cluster.name }}</td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['cpu'].label }}</td>
+                <td>{{ order.cpu }}核</td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['mem'].label }}</td>
+                <td>{{ order.mem }}G</td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['os_id'].label }} </td>
+                <td>{{ order.os.name }} </td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['network'].label }} </td>
+                <td>
+                {% if order.network[0] != '' %}
+                {% for n in order.network %}
+                    <span class="label">{{ network_dict[n].name }}</span>
+                {% endfor %}
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['disk'].label }}</td>
+                <td>
+                {% if order.disk[0] != '' %}
+                {% for d in order.disk %}
+                    <span class="label">{{ d }}G</span>
+                {% endfor %}
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td class="name">{{ form['cnt'].label }}</td>
+                <td>{{ order.cnt }}</td>
+            </tr>
+            <tr>
+                <td class="name">状态</td>
+                <td id="order-state">
+                    <span class="label {{ config['ORDER_STATUS'][order.status]['class'] }}">
+                        {{ config['ORDER_STATUS'][order.status]['label'] }}
+                    </span>
+                    {% if current_user.role == 1 %}
+                    <a class="edit" href="#"><i class="icon-edit"></i></a>
+                    <select class="input-small hide">
+                        {% for x in config['ORDER_STATUS'].keys() %}
+                        <option value="{{ x }}" 
+                        {% if order.status == x %}
+                            selected
+                        {% endif %}
+                        >{{ config['ORDER_STATUS'][x]['label'] }}</option>
+                        {% endfor %}
+                    </select>
+                    <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
+                    <a class="save hide" href="#" data-api="{{ url_for('order.state_change', order_id=order.id) }}"><i class="icon-ok"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td class="name">申请时间</td>
+                <td>{{ order.created_time.strftime("%Y-%m-%d %H:%M") }}</td>
+            </tr>
+            {% if not personal %}
+            <tr>
+                <td class="name">申请人</td>
+                <td>{{ order.user.chinese_name }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+{% endmacro %}

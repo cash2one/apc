@@ -11,16 +11,16 @@ $(document).ready(function() {
             <a class="brand" href="{{ url_for('index') }}">Anjuke Private Cloud</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="dashboard" id="nav_dashboard"><a href="{{ url_for('index') }}">主面板</a></li>
-                    <li class="buy" id="nav_buy"><a href="{{ url_for('order.index') }}">购买</a></li>
+                    <li class="buy" id="nav_buy"><a href="{{ url_for('order.new') }}">购买</a></li>
                     <li class="order_list" id="nav_order_list"><a href="{{ url_for('order.list') }}">订单</a></li>
+                    <li class="hosts" id="nav_hosts"><a href="{{ url_for('hosts.index') }}">宿主机</a></li>
                 </ul>
                 <ul class="nav pull-right">
                     {% if current_user.is_authenticated() %}
-                    <li class="personal"><a href="{{ url_for('order.index') }}">个人中心</a></li>
+                    <li class="my"><a href="{{ url_for('my_vm.test') }}">个人中心</a></li>
+                    {% if current_user.role == 1 %}
                     <li class="admin"><a href="{{ url_for('admin.index') }}">管理</a></li>
                     {% endif %}
-                    {% if current_user.is_authenticated() %}
                     <li><a href="#">您好，{{ current_user.chinese_name }}！</a></li>
                     <li><a href="{{ url_for('logout') }}">注销</a></li>
                     {% else %}

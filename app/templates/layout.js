@@ -5,3 +5,16 @@ function flash(message, category) {
         showCloseButton: true
     });
 }
+
+$(document).ready(function() {
+    $(".table-hover tbody tr").hover(
+        function () {
+            $(this).addClass("hover");
+        },
+        function () {
+            $(this).removeClass("hover");
+        }
+    );
+
+    $("table input[type='checkbox']").css({"margin-top":"0"});
+});

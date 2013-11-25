@@ -49,3 +49,11 @@ def check_load_order(func):
         order = Orders.query.get_or_404(kvargs['order_id'])
         return func(order=order, **kvargs)
     return wrapper
+
+def check_load_vm(func):
+    @wraps(func)
+    def wrapper(**kvargs):
+        vm = VM.query.get_or_404(kvargs['vm_id'])
+        return func(vm=vm, **kvargs)
+    return wrapper
+

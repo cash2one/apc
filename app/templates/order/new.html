@@ -1,0 +1,24 @@
+{% extends 'order/layout.html' %}
+
+{% block nav %}
+{% from 'import/nav.html' import nav %}
+{{ nav(current_user, 'buy') }}
+{% endblock %}
+
+{% from 'import/forms.html' import field %}
+
+
+{% block addon_head %}
+<link href="{{ url_for('custom_static', filename='order/form.css') }}" rel="stylesheet">
+<script src="{{ url_for('custom_static', filename='order/form.js') }}"></script>
+<script type="text/javascript">
+    edit = {{ edit }};
+    price = {{ price|safe }};
+</script>
+{% endblock %}
+
+
+{% block content_body %}
+{% from 'order/form.html' import order_form %}
+{{ order_form(form, cpu, url_for('order.new')) }}
+{% endblock %}

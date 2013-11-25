@@ -1,0 +1,12 @@
+{% extends 'my/vm/layout.html' %}
+
+
+{% block addon_head %}
+<link href="{{ url_for('custom_static', filename='my/vm/list.css') }}" rel="stylesheet">
+<script src="{{ url_for('custom_static',filename='my/vm/list.js') }}"></script>
+{% endblock %}
+
+{% from 'my/vm/list.html' import my_vm_list %}
+{% block region %}
+{{ my_vm_list(vms, '线上机器', 'my_vm.production', if_test=False) }}
+{% endblock %}

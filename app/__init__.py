@@ -45,19 +45,27 @@ from app.views import general
 from app.views import order
 from app.views import api
 from app.views import sunstone_api
-from app.views.admin import index
+from app.views import vm
+from app.views import hosts
+from app.views.admin import index as admin_index
 from app.views.admin import idc
 from app.views.admin import cluster
 from app.views.admin import cpu_mem
 from app.views.admin import network
 from app.views.admin import osimage
+from app.views.my import vm as my_vm
+from app.views.my import order as my_order
 
 app.register_blueprint(order.mod)
 app.register_blueprint(api.mod)
 app.register_blueprint(sunstone_api.mod)
-app.register_blueprint(index.mod)
+app.register_blueprint(vm.mod)
+app.register_blueprint(hosts.mod)
+app.register_blueprint(admin_index.mod)
 app.register_blueprint(idc.mod)
 app.register_blueprint(cluster.mod)
 app.register_blueprint(cpu_mem.mod)
 app.register_blueprint(network.mod)
 app.register_blueprint(osimage.mod)
+app.register_blueprint(my_vm.mod)
+app.register_blueprint(my_order.mod)

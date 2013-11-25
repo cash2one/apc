@@ -29,8 +29,9 @@ def add():
         return render_template('admin/cluster/add.html', form=form)
 
     try:
-        cluster = Cluster(form.idc_id.data, form.name.data, form.host.data, form.occi_api.data, 
-                    form.sunstone_api.data, form.api_auth.data, form.ds_id.data, form.ds_name.data)
+        cluster = Cluster(form.idc_id.data, form.name.data, form.if_test.data, form.host.data, 
+                          form.occi_api.data, form.occi_auth.data, form.sunstone_api.data, 
+                          form.sunstone_auth.data, form.ds_id.data, form.ds_name.data)
         db.session.add(cluster)
         db.session.commit()
         flash(u'添加成功', 'success')
@@ -64,7 +65,6 @@ def edit(cluster, **kvargs):
 @check_load_cluster
 def delete(cluster, **kvargs):
     ret = {}
-
     try:
         db.session.delete(cluster)
         db.session.commit()
@@ -73,16 +73,18 @@ def delete(cluster, **kvargs):
     except:
         ret['status'] = 0
         ret['msg'] = u"删除失败"
-
     return json.dumps(ret)
 
 
 class ClusterForm(Form):
     idc_id = SelectField(u'机房', coerce=int)
     name = TextField(u'集群名称', validators=[Required()])
+    if_test = SelectField(u'是否测试', choices=[('1', u'是'), ('0', u'否')])
     host = TextField(u'中心节点', validators=[Required()])
     occi_api = TextField(u'OCCI API', validators=[Required()])
     sunstone_api = TextField(u'Sunstone API', validators=[Required()])
-    api_auth = TextField(u'API Auth', validators=[Required()])
+    sunstone_auth = TextField(u'Sunstone Auth', validators=[Required()])
+    occi_api = TextField(u'OCCI API', validators=[Required()])
+    occi_auth = TextField(u'OCCI Auth', validators=[Required()])
     ds_name = TextField(u'Datastore', validators=[])
     ds_id = TextField(u'Datastore ID', validators=[])

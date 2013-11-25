@@ -1,12 +1,12 @@
-{% extends 'order/layout.html' %}
+{% extends 'my/order/layout.html' %}
 
 
-{% block addon_head %}
-<script src="{{ url_for('custom_static', filename='order/list.js') }}"></script>
-{% endblock %}
+{% block region %}
+<div class="content-head">
+    <h2 class="pull-left">我的订单</h2>
+    <div class="clear"></div>
+</div>
 
-
-{% block content_body%}
 <table class="table table-hover">
     <thead>
         <tr>
@@ -17,15 +17,13 @@
             <th>系统</th>
             <th>数量</th>
             <th>状态</th>
-            <th>申请时间</th>
-            <th>申请人</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
         {% if order.items.__len__() == 0 %}
         <tr>
-            <td colspan="10">Null</td>
+            <td colspan="8">Null</td>
         </tr>
         {% else %}
         {% for o in order.items %}
@@ -37,11 +35,9 @@
             <td>{{ o.os.name }}</td>
             <td>{{ o.cnt }}</td>
             <td><span class="label {{ order_status[o.status].class }}">{{ order_status[o.status].label }}</span></td>
-            <td>{{ o.created_time.strftime("%Y-%m-%d %H:%M") }}</td>
-            <td>{{ o.user.chinese_name }}</td>
             <td class="action">
-               <a class="delete" href="{{ url_for('order.delete', order_id=o.id) }}"><i class="icon-trash"></i></a>
-               <a href="{{ url_for('order.view', order_id=o.id) }}"><i class="icon-chevron-right"></i></a>
+                &nbsp;&nbsp;
+                <a href="{{ url_for('my_order.view', order_id=o.id) }}"><i class="icon-chevron-right"></i></a>
             </td>
         </tr>
         {% endfor %}
@@ -50,5 +46,5 @@
 </table>
 
 {% from 'import/pagination.html' import render_pagination %}
-{{ render_pagination(order, 'order.list') }}
+{{ render_pagination(order, 'my_order.list') }}
 {% endblock %}

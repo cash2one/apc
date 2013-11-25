@@ -26,6 +26,12 @@ body {
     text-align: center;
 }
 
+.clear {
+    clear: both;
+    line-height: 0;
+    height: 0;
+}
+
 
 /*
  * Sidebar Nav
@@ -66,6 +72,94 @@ body {
     color: black;
 }
 
+
+/*
+ * Content head
+ */
+.content-head {
+    border-color: #E5E5E5;
+    border-style: none none solid none;
+    border-width: 0 0 1px 0;
+    margin-bottom: 20px;
+}
+
+.content-head a i {
+    margin-top: 3px;
+}
+
+.content-head a.btn-action i {
+    margin-top: 1px;
+}
+
+.content-head h2 {
+    font-size: 21px;
+    font-weight: normal;
+    line-height: 40px;
+    margin: 0;
+}
+
+.content-head div {
+    line-height: 40px;
+}
+
+.content-head .btn-action {
+    padding: 2px 10px;
+    background-color: #E9E9E9;
+    border: 1px solid #C3C3C3;
+}
+
+.content-head .btn-action:hover {
+    background-color: #D0D0D0;
+}
+
+/*
+ * Pagination
+ */
+.pagination .pull-left {
+    padding: 4px 0;
+}
+
+
+/*
+ * Percent group
+ */
+.percent-group {
+    border-radius: 3px 3px 3px 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #CCCCCC;
+    padding: 1px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.percent-group .text {
+    font-size: 0.9em;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    top: -20px;
+}
+
+.percent-group .bar {
+    height: 10px;
+}
+
+.percent-group .top {
+    border-radius: 2px 2px 2px 0px;
+    background-color: #0E90D2;
+}
+
+.percent-group .bottom {
+    border-radius: 0px 2px 2px 2px;
+    background-color: #62c462;
+}
+
+.percent-group .top, .percent-group .bottom {
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+}
+
 /*
  * Overwrite bootstrap CSS
  */
@@ -79,6 +173,16 @@ body {
 
 legend a {
     font-size: 14px;
+}
+
+.btn-action {
+    padding: 2px 10px;
+    background-color: #E9E9E9;
+    border: 1px solid #C3C3C3;
+}
+
+.btn-action:hover {
+    background-color: #D0D0D0;
 }
 
 .label .close {
@@ -112,4 +216,20 @@ legend a {
 .table-head {
     border-bottom: #CCCCCC solid thin;
     margin-top: 20px;
+}
+
+tr.selected {
+    background-color: #EEEEEE;
+}
+
+tr .action {
+    filter: alpha(opacity=30);
+    -moz-opacity: 0.3;
+    opacity: 0.3;
+}
+
+tr.hover .action {
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    opacity: 1;
 }

@@ -22,6 +22,26 @@
 {% endmacro %}
 
 
+{% macro field_form(form, name) %}
+<div class="control-group">
+    {{ form[name].label(class="control-label") }}
+    <div class="controls pdt-5">
+        {{ form[name] }}
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro field_disp(label, value) %}
+<div class="control-group">
+    <label class="control-label">{{ label }}</label>
+    <div class="controls pdt-5">
+        {{ value }}
+    </div>
+</div>
+{% endmacro %}
+
+
 {% macro cluster_form(form, legend, url, submit, cancle_url) %}
 <form class="form-horizontal" action="{{ url }}" method="POST">
     <legend>{{ legend }}</legend>
@@ -31,10 +51,12 @@
 
     {{ field(form, 'idc_id') }}
     {{ field(form, 'name') }}
+    {{ field(form, 'if_test') }}
     {{ field(form, 'host') }}
     {{ field(form, 'occi_api') }}
+    {{ field(form, 'occi_auth') }}
     {{ field(form, 'sunstone_api') }}
-    {{ field(form, 'api_auth') }}
+    {{ field(form, 'sunstone_auth') }}
     {{ field(form, 'ds_id', gclass='hide') }}
     {{ field(form, 'ds_name', autocomplete='off') }}
 

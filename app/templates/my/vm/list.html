@@ -1,0 +1,66 @@
+{% macro my_vm_list(vms, title, endpoint, if_test=False) %}
+<div class="content-head">
+    <h2 class="pull-left">{{ title }}</h2>
+    <div class="pull-right" id="vmop-btn">
+        <a href="{{ url_for('vm.refresh') }}" title="刷新" class="btn-action refresh"><i class="icon-refresh"></i></a>
+        {% if if_test %}
+        <a href="#" title="续租" class="btn-action "><i class="icon-time"></i></a>
+        {% endif %}
+        <a href="#" title="启动" class="btn-action start"><i class="icon-play"></i></a>
+        <a href="#" title="删除" class="btn-action delete"><i class="icon-trash"></i></a>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<form id="vmop" class="hide" action="{{ url_for('vm.delete_mult') }}" method="POST">
+    <input type="text" id="vmlist" name="vmlist" value=""/>
+    <input type="text" id="action" name="action" value=""/>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="5%"><input type="checkbox"></th>
+            <th>机器名</th>
+            <th>IP</th>
+            <th>用途</th>
+            <th>状态</th>
+            {% if if_test %}
+            <th>剩余天数</th>
+            {% endif %}
+            <th>VNC</th>
+            <th width="8%">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if vms.items.__len__() == 0 %}
+        <tr>
+            <td colspan="8">Null</td>
+        </tr>
+        {% endif %}
+        {% for x in vms.items %}
+        <tr id="vm_{{ x.id }}" data-id="{{ x.id }}">
+            <td><input type="checkbox"></td>
+            <td class="hostname">
+                <span>{{ x.hostname }}</span>
+                <input class="input-small hide" value="{{ x.hostname }}"/>
+            </td>
+            <td>{{ '<br/>'.join(x.ip)|safe }}</td>
+            <td>{{ x.order.desc }}</td>
+            <td>{{ x.status }}</td>
+            {% if if_test %}
+            <td>{{ x.days }}</td>
+            {% endif %}
+            <td>VNC</td>
+            <td class="action">
+                <a href="#"><i class="icon-edit"></i></a>
+                <a href="#"><i class="icon"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% from 'import/pagination.html' import render_pagination %}
+{{ render_pagination(vms, endpoint) }}
+{% endmacro %}

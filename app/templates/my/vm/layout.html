@@ -1,0 +1,7 @@
+{% extends 'my/layout.html' %}
+
+
+{% block sidebar %}
+{% from 'import/nav_my.html' import nav_my %}
+{{ nav_my('vm') }}
+{% endblock %}

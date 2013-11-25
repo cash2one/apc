@@ -17,8 +17,12 @@ class APC:
 
         sunstone = Sunstone(self.cluster)
         data = json.loads(sunstone.vnet().data)
+        vnets = data['VNET_POOL']['VNET']
 
-        for vnet in data['VNET_POOL']['VNET']:
+        if type(vnets) == dict:
+            vnets = [vnets]
+
+        for vnet in vnets:
             ele = {}
             ele['sunstone_id'] = int(vnet['ID'])
             ele['sunstone_name'] = vnet['NAME']
@@ -32,8 +36,12 @@ class APC:
 
         sunstone = Sunstone(self.cluster)
         data = json.loads(sunstone.image().data)
+        images = data['IMAGE_POOL']['IMAGE']
 
-        for image in data['IMAGE_POOL']['IMAGE']:
+        if type(images) == dict:
+            images = [images]
+
+        for image in images:
             ele = {}
             ele['sunstone_id'] = int(image['ID'])
             ele['sunstone_name'] = image['NAME']
@@ -47,8 +55,12 @@ class APC:
 
         sunstone = Sunstone(self.cluster)
         data = json.loads(sunstone.datastore().data)
+        datastores = data['DATASTORE_POOL']['DATASTORE']
 
-        for datastore in data['DATASTORE_POOL']['DATASTORE']:
+        if type(datastores) == dict:
+            datastores = [datastores]
+
+        for datastore in datastores:
             ele = {}
             ele['sunstone_id'] = int(datastore['ID'])
             ele['sunstone_name'] = datastore['NAME']

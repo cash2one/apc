@@ -10,6 +10,13 @@ from app.views import *
 mod = Blueprint('api', __name__, url_prefix='/api')
 
 
+@mod.route('/cluster/<int:cluster_id>')
+@check_load_cluster
+def cluster(cluster, **kvargs):
+    return '{"cluster_id":%s , "cluster_name":"%s", "if_test":%s}' % \
+            (cluster.id, cluster.name, cluster.if_test)
+
+
 @mod.route('/cpu_scheme')
 def cpu_scheme():
     ret = []

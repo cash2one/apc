@@ -1,18 +1,12 @@
-{% extends 'order/layout.html' %}
-
 {% from 'import/forms.html' import field %}
 
-{% block addon_head %}
-<link href="{{ url_for('custom_static', filename='order/index.css') }}" rel="stylesheet">
-<script src="{{ url_for('custom_static', filename='order/index.js') }}"></script>
-{% endblock %}
 
-{% block content_body %}
-<br/>
-<form class="form-horizontal" method="POST" action="{{ url_for('order.new') }}">
+{% macro order_form(form, cpu, action, order='') %}
+<form class="form-horizontal" method="POST" action="{{ action }}">
     {{ form.hidden_tag() }}
     {{ form.csrf }}
 
+    {{ field(form, 'desc') }}
     {{ field(form, 'cluster_id') }}
 
     {{ field(form, 'cpu', gclass='hide') }}
@@ -79,21 +73,22 @@
     <div class="control-group group-os">
         <label class="control-label">操作系统</label>
         <div class="controls">
+            <input id="osid-pre" type="hidden" value="{{ form.os_id.data }}"/>
             <select id="os-template" name="os-template" class="hide">
                 <option value="{value}">{label}</option>
             </select>
-            <select id="os-id" name="os-id" data-api="{{ url_for('api.osimage') }}">
+            <select id="os_id" name="os_id" data-api="{{ url_for('api.osimage') }}">
             </select>
         </div>
     </div>
 
     {{ field(form, 'cnt') }}
-    {{ field(form, 'desc') }}
+    {{ field(form, 'days', gclass="hide") }}
 
     <div class="control-group">
         <label class="control-label">价格</label>
         <div class="controls pdt-5">
-            <font id="price" color="red"><b>324</b>&nbsp;元/月</font>
+            <font color="red"><b id="price"></b>&nbsp;元/月/台</font>
         </div>
     </div>
     <div class="control-group">
@@ -102,4 +97,4 @@
         </div>
     </div>
 </form>
-{% endblock %}
+{% endmacro %}

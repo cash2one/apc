@@ -1,0 +1,31 @@
+{% macro nav_my(view) %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#nav_{{ view }}").addClass("active");
+});
+</script>
+
+<div class="block">
+    <h2>账户</h2>
+    <ul>
+        <li id="nav_my_order"><a href="{{ url_for('my_order.list') }}">我的订单</a></li>
+        <li><a href="#">消费历史</a></li>
+        <li><a href="">资源变更</a></li>
+    </ul>
+</div>
+
+<div class="block">
+    <h2>机器列表</h2>
+    <ul>
+        <li><a href="{{ url_for('my_vm.test') }}">测试机</a></li>
+        <li><a href="{{ url_for('my_vm.production') }}">线上机器</a></li>
+    </ul>
+</div>
+
+<div class="block">
+    <h2>其他</h2>
+    <ul>
+        <li><a href="#">个人信息</a></li>
+    </ul>
+</div>
+{% endmacro %}

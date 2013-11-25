@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+
+{% block nav %}
+{% from 'import/nav.html' import nav %}
+{{ nav(current_user, 'my') }}
+{% endblock %}
+
+{% block addon_head %}
+<link href="{{ url_for('custom_static', filename='order/view.css') }}" rel="stylesheet">
+<script src="{{ url_for('custom_static', filename='order/view.js') }}"></script>
+{% endblock %}
+
+{% from 'order/import/view.html' import order_view %}
+{% block content_body %}
+{{ order_view(order, network_dict, form, config, current_user, personal=True) }}
+{% endblock %}

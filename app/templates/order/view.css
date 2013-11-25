@@ -1,0 +1,53 @@
+table.detail {
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    border-color: #e5e4e4;
+}
+
+table.detail td {
+    padding: 5px 15px;
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+    border-color: #e5e4e4;
+}
+
+table.detail td.name {
+    text-align: right;
+    background-color: #f0f0f0;
+}
+
+.head {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #e5e4e4;
+    margin-bottom: 15px;
+}
+
+.head .pull-right {
+    line-height: 40px;
+    margin-top: 10px;
+}
+
+.head a {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.head a i {
+    margin-top: 3px;
+}
+
+h4 {
+    padding: 10px 0;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: #e5e4e4;
+}
+
+#order-state {
+    vertical-align: middle;
+}
+
+#order-state select {
+    margin-bottom: 0;
+}
