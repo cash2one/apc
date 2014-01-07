@@ -1,0 +1,181 @@
+{% macro detail_item(label, value) %}
+<tr>
+    <td width="30%" class="name">{{ label }}</td>
+    <td width="70%">{{ value }}</td>
+</tr>
+{% endmacro %}
+
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        <li class="refresh"><a href="{{ url_for('vm.view', vm_id=vm.id) }}" id="vm_refresh"><i class="icon-refresh"></i></a></li>
+        <li class="basic_info active"><a href="#basic_info" data-toggle="tab">基本信息</a></li>
+        <li class="monitor"><a href="#monitor" data-toggle="tab">监控</a></li>
+        <li class="cpu_mem"><a href="#cpu_mem" data-toggle="tab">CPU/MEM</a></li>
+        <li class="nic"><a href="#nic" data-toggle="tab">网卡</a></li>
+        <li class="disk"><a href="#disk" data-toggle="tab">磁盘</a></li>
+        <li class="snapshot"><a href="#snapshot" data-toggle="tab">快照</a></li>
+        <li class="log"><a href="#log" data-toggle="tab">操作日志</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="basic_info">
+            <table class="table table-bordered detail">
+                <tr>
+                    <td class="name">主机名</td>
+                    <td id="hostname" class="basic_action">
+                        <span>{{ vm.hostname }}</span>
+                        <input class="input-small hide" value="{{ vm.hostname }}"/>
+                        <a class="edit" href="#"><i class="icon-edit"></i></a>
+                        <a class="save hide" href="{{ url_for('vm.rename', vm_id=vm.id) }}"><i class="icon-ok"></i></a>
+                        <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
+                    </td>
+                </tr>
+                {{ detail_item("集群", vm.cluster.name) }}
+                <tr>
+                    <td class="name">用途</td>
+                    <td id="usage" class="basic_action">
+                        <span>{{ vm.desc }}</span>
+                        <input class="hide" value="{{ vm.desc }}"/>
+                        <a class="edit" href="#"><i class="icon-edit"></i></a>
+                        <a class="save hide" href="{{ url_for('vm.redesc', vm_id=vm.id) }}"><i class="icon-ok"></i></a>
+                        <a class="cancle hide" href="#"><i class="icon-ban-circle"></i></a>
+                    </td>
+                </tr>
+                {{ detail_item("CPU", "%s核" % vm.cpu) }}
+                {{ detail_item("内存", "%sG" % vm.mem) }}
+                <tr>
+                    <td class="name">网卡</td>
+                    <td>
+                        {% for x in vm.network %}
+                        <span class="label">{{ network_dict[x].name }}</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="name">磁盘</td>
+                    <td>
+                        {% for x in vm.disk %}
+                        <span class="label">{{ x }}G</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {{ detail_item("操作系统", vm.order.os.name) }}
+                {{ detail_item("状态", vm.status) }}
+                {{ detail_item("Owner", vm.user.chinese_name) }}
+                {{ detail_item("创建时间", vm.created_time.strftime("%Y-%m-%d %H:%M")) }}
+                {{ detail_item("价格", ("<font color='red'>%s</font>元/月" % vm.price)|safe) }}
+            </table>
+        </div>
+        <div class="tab-pane" id="monitor">
+        </div>
+        <div class="tab-pane" id="cpu_mem">
+            <form class="form-inline" id="resize" action="{{ url_for('vm.resize', vm_id=vm.id) }}">
+                {% if vm.status != "POWEROFF" %}
+                {% set ifavailable = "disabled" %}
+                {% else %}
+                {% set ifavailable = "" %}
+                {% endif %}
+                <select {{ ifavailable }} class="input-small" id="cpu_select">
+                    {% for x in cpu %}
+                    <option value="{{ x }}" {% if x==vm.cpu %}selected{% endif %}>{{ x }}核</option>
+                    {% endfor %}
+                </select>
+                <select {{ ifavailable }} class="input-small" id="mem_select" data-api="{{ url_for('api.mem_scheme') }}">
+                    {% for x in mem %}
+                    <option value="{{ x.mem }}" {% if x.mem==vm.mem %}selected{% endif %}>{{ x.mem }}G</option>
+                    {% endfor %}
+                </select>
+                <button {{ ifavailable }} type="button" class="btn" id="resize_btn">resize</button>
+                {% if vm.status != "POWEROFF" %}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <i>请先将机器关机，使其在POWEROFF状态再Resize</i>
+                {% endif %}
+            </form>
+            <table class="table table-bordered"> 
+                <thead>
+                    <tr>
+                        <th>CPU</th>
+                        <th>内存</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ vm.cpu }}核</td>
+                        <td>{{ vm.mem }}G</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="nic">
+            <form class="form-inline" id="nic_attach" action="{{ url_for('vm.attach_nic', vm_id=vm.id) }}">
+                {% if vm.status != "RUNNING" %}
+                {% set ifavailable = "disabled" %}
+                {% else %}
+                {% set ifavailable = "" %}
+                {% endif %}
+                <select {{ ifavailable }} id="nic_select" class="input-medium">
+                    {% for x in vm.cluster.network %}
+                    <option value="{{ x.id }}">{{ x.name }}</option>
+                    {% endfor %}
+                </select>
+                <button {{ ifavailable }} type="button" class="btn" id="nic_attach_btn">attach</button>
+                {% if vm.status != "RUNNING" %}
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <i>只有在机器处于RUNNING状态才能添加网卡</i>
+                {% endif %}
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>IP</th>
+                        <th>MAC</th>
+                        <th width="100">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if vm_detail['NIC'].__len__() == 0 %}
+                    <tr>
+                        <td colspan="4">Null</td>
+                    </tr>
+                    {% endif %}
+                    {% for x in vm_detail['NIC'] %}
+                    <tr>
+                        <td>{{ x.NIC_ID }}</td>
+                        <td>{{ x.IP }}</td>
+                        <td>{{ x.MAC }}</td>
+                        <td><a class="nic_detach" href="{{ url_for('vm.detach_nic', vm_id=vm.id) }}" data-nicid="{{ x.NIC_ID }}">Detach</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="disk">
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Target</th>
+                        <th>大小</th>
+                        <th width="100">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in vm_detail['DISK'] %}
+                    <tr>
+                        <td>{{ x.DISK_ID }}</td>
+                        <td>{{ x.TARGET }}</td>
+                        <td></td>
+                        <td><a href="#">Detach</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="snapshot">
+        </div>
+        <div class="tab-pane" id="log">
+        </div>
+    </div>
+</div>
+

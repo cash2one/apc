@@ -13,7 +13,16 @@ $(document).ready(function() {
                 <ul class="nav">
                     <li class="buy" id="nav_buy"><a href="{{ url_for('order.new') }}">购买</a></li>
                     <li class="order_list" id="nav_order_list"><a href="{{ url_for('order.list') }}">订单</a></li>
-                    <li class="hosts" id="nav_hosts"><a href="{{ url_for('hosts.index') }}">宿主机</a></li>
+                    <li class="dropdown machine">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">机器&nbsp;<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="hosts"><a href="{{ url_for('hosts.index') }}">宿主机</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">虚拟机</li>
+                            <li class="vm_test"><a href="{{ url_for('vm.test') }}">测试机</a></li>
+                            <li class="vm_production"><a href="{{ url_for('vm.production') }}">线上机器</a></li>
+                        </ul>
+                    <li>
                 </ul>
                 <ul class="nav pull-right">
                     {% if current_user.is_authenticated() %}

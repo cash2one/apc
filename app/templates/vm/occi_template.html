@@ -16,22 +16,39 @@
         <STORAGE href="http://0.0.0.0:4567/storage/{{ order.os.sunstone_id }}"/>
         <DEV_PREFIX>vd</DEV_PREFIX>
         <TARGET>vda</TARGET>
+        {% if ds_mad == "ceph" %}
         <DRIVER>raw</DRIVER>
+        {% elif ds_mad == "fs" %}
+        <DRIVER>qcow2</DRIVER>
+        {% endif %}
     </DISK>
 
-    {% for d in disk_arr %}
-    <DISK>
-        <STORAGE href="http://0.0.0.0:4567/storage/{{ d }}"/>
-        <DEV_PREFIX>vd</DEV_PREFIX>
-        <DRIVER>raw</DRIVER>
-    </DISK>
-    {% endfor %}
-
-    {% for d in order.disk %}
-    {% endfor %}
+    {% if ds_mad == "ceph" %}
+      {% for d in disk_arr %}
+        <DISK>
+            <STORAGE href="http://0.0.0.0:4567/storage/{{ d }}"/>
+            <DEV_PREFIX>vd</DEV_PREFIX>
+            <DRIVER>raw</DRIVER>
+        </DISK>
+      {% endfor %}
+    {% elif ds_mad == "fs" %}
+      {% for d in order.disk %}
+        <DISK>
+            <TYPE>fs</TYPE>
+            <SIZE>{{ d * 1024 }}</SIZE>
+            <DEV_PREFIX>vd</DEV_PREFIX>
+            <FORMAT>raw</FORMAT>
+            <DRIVER>raw</DRIVER>
+        </DISK>
+      {% endfor %}
+    {% endif %}
 
     <OS>
         <ARCH>x86_64</ARCH>
     </OS>
-</COMPUTE>
 
+    <GRAPHICS>
+        <TYPE>VNC</TYPE>
+        <LISTEN>0.0.0.0</LISTEN>
+    </GRAPHICS>
+</COMPUTE>

@@ -36,7 +36,7 @@
             <td>{{ o.cnt }}</td>
             <td><span class="label {{ order_status[o.status].class }}">{{ order_status[o.status].label }}</span></td>
             <td class="action">
-                &nbsp;&nbsp;
+                &nbsp;
                 <a href="{{ url_for('my_order.view', order_id=o.id) }}"><i class="icon-chevron-right"></i></a>
             </td>
         </tr>

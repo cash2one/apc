@@ -2,7 +2,13 @@
 <div class="pagination text-center">
     <div class="pull-left">
         共<b>{{ pagination.total }}</b>条记录，
-        当前第<b>{{ (pagination.page-1)*pagination.per_page + 1 }}-{{ (pagination.page-1)*pagination.per_page + pagination.items.__len__() }}</b>条
+        当前第<b>
+        {% if pagination.items.__len__() == 0 %}
+            0
+        {% else %}
+            {{ (pagination.page-1)*pagination.per_page + 1 }}
+        {% endif %}
+        - {{ (pagination.page-1)*pagination.per_page + pagination.items.__len__() }}</b>条
     </div>
     <ul class="pull-right">
         {% if pagination.pages == 0 %}

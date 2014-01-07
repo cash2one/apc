@@ -56,14 +56,14 @@ $(document).ready(function() {
             return false;
         }
 
-        ele = $(this);
+        e = $(this);
         $.ajax({
             type: 'POST',
-            url: ele.attr('href'),
+            url: e.attr('href'),
             dataType: 'json',
             success: function(ret) {
                 if(ret.status) {
-                    ele.parent().parent().remove();
+                    e.parent().parent().remove();
                 } else {
                     flash("删除失败", 'error');
                 }
@@ -73,6 +73,7 @@ $(document).ready(function() {
     });
 
 
+    //Edit state
     $("#order-state .edit").click(function() {
         $("#order-state span").hide();
         $("#order-state a.edit").hide();

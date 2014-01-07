@@ -7,7 +7,11 @@ class Sunstone:
 
     def __init__(self, cluster): 
         self.api = cluster.sunstone_api.replace('http://', '')
-        self.headers = {"Cookie": cluster.sunstone_auth}
+        cookie_req = http_req(host=self.api, uri='/login', method='POST', headers={"Authorization": cluster.sunstone_auth})
+        for x in cookie_req.getheaders():
+            if x[0] == "set-cookie":
+                cookie = x[1].split(';')[0]
+        self.headers = {"Cookie": cookie}
 
     def vnet(self):
         return http_req(host=self.api, uri='/vnet', headers=self.headers)

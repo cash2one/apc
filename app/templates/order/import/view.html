@@ -1,23 +1,28 @@
 {% macro order_view(order, network_dict, form, config, current_user, personal=False) %}
-<div class="head">
-    <h3 class="pull-left">订单详情</h3>
+<div class="content-head">
+    <h2 class="pull-left">订单详情</h2>
     <div class="pull-right">
-        {% if personal %}
-        <a href="{{ url_for('my_order.list') }}"><i class="icon-arrow-left"></i>返回</a>
-        {% else %}
-        <a href="{{ url_for('order.list') }}"><i class="icon-arrow-left"></i>返回</a>
-        {% endif %}
-        {% if order.status == 1 or order.status == 2 %}
-        <a href="{{ url_for('vm.refresh') }}"><i class="icon-refresh"></i>刷新</a>
-        {% endif %}
-        {% if order.status == 0 and current_user.role == 1 %}
-        <a href="{{ url_for('order.approve', order_id=order.id) }}"><i class="icon-ok"></i>通过</a>
-        <a href="{{ url_for('order.reject', order_id=order.id) }}"><i class="icon-ban-circle"></i>驳回</a>
-        {% endif %}
-        {% if order.status == 0 %}
-        <a href="{{ url_for('order.edit', order_id=order.id) }}"><i class="icon-edit"></i>修改</a>
-        <a href="{{ url_for('order.cancle', order_id=order.id) }}"><i class="icon-remove"></i>取消</a>
-        {% endif %}
+      {% if personal %}
+        <a href="{{ url_for('my_order.list') }}" title="返回" class="btn btn-action"><i class="icon-arrow-left"></i></a>
+      {% else %}
+        <a href="{{ url_for('order.list') }}" title="返回" class="btn btn-action"><i class="icon-arrow-left"></i></a>
+      {% endif %}
+      {% if order.status == 1 or order.status == 2 %}
+        <a href="{{ url_for('vm.refresh') }}" title="刷新" class="btn btn-action"><i class="icon-refresh"></i></a>
+      {% endif %}
+      {% if order.status == 0 and current_user.role == 1 %}
+        <div class="btn-group">
+            <a href="{{ url_for('order.approve', order_id=order.id) }}" title="通过" class="btn btn-action"><i class="icon-ok"></i></a>
+            <a href="{{ url_for('order.reject', order_id=order.id) }}" title="驳回" class="btn btn-action"><i class="icon-ban-circle"></i></a>
+        </div>
+      {% endif %}
+      {% if order.status == 2 and current_user.role == 1 %}
+        <a href="{{ url_for('order.approve', order_id=order.id) }}" title="重新创建" class="btn btn-action"><i class="icon-repeat"></i></a>
+      {% endif %}
+      {% if order.status == 0 %}
+        <a href="{{ url_for('order.edit', order_id=order.id) }}" title="修改" class="btn btn-action"><i class="icon-edit"></i></a>
+        <a href="{{ url_for('order.cancle', order_id=order.id) }}" title="取消" class="btn btn-action"><i class="icon-remove"></i></a>
+      {% endif %}
     </div>
     <div class="clear"></div>
 </div>
@@ -63,7 +68,7 @@
     </div>
 
     <div class="span4">
-        <table width="100%" class="detail">
+        <table width="100%" class="table table-bordered detail">
             <tr>
                 <td width="30%" class="name">{{ form['desc'].label }}</td>
                 <td width="70%">{{ order.desc }}</td>

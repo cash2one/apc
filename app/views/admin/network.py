@@ -28,9 +28,10 @@ def index():
 @mod.route('/add', methods=['POST'])
 def add():
     form = NetworkForm()
-    form.cluster_id.choices = [(i.id, i.name) for i in IDC.query.all()]
+    form.cluster_id.choices = [(i.id, i.name) for i in Cluster.query.all()]
 
     if not form.validate_on_submit():
+        print form.errors
         flash(u'网段选择有误！', 'error')
         return redirect(url_for('.index'))
 

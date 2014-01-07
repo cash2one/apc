@@ -107,6 +107,7 @@ class Cluster(db.Model):
     ds_name = Column(String(256))
 
     idc = relationship("IDC")
+    #os_images = relationship("os_image", backref="cluster")
 
     def __init__(self, idc_id, name, if_test, host, occi_api, occi_auth, sunstone_api, sunstone_auth, ds_id, ds_name):
         self.idc_id = idc_id
@@ -147,7 +148,7 @@ class Network(db.Model):
     name = Column(String(256))
     if_default = Column(Integer)
 
-    cluster = relationship('Cluster')
+    cluster = relationship('Cluster', backref=backref('network', order_by=id))
 
     def __init__(self, cluster_id, sunstone_id, sunstone_name, name, if_default):
         self.cluster_id = cluster_id
@@ -169,7 +170,7 @@ class OS_Image(db.Model):
     name = Column(String(256))
     if_default = Column(Integer)
 
-    cluster = relationship('Cluster')
+    cluster = relationship('Cluster', backref=backref('os_image', order_by=id))
 
     def __init__(self, cluster_id, sunstone_id, sunstone_name, name, if_default):
         self.cluster_id = cluster_id

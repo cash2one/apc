@@ -5,7 +5,7 @@
 <div class="content-head">
     <h2 class="pull-left">宿主机列表</h2>
     <div class="pull-right">
-       <a href="{{ url_for('hosts.refresh') }}"><i class="icon-refresh"></i>刷新</a>
+       <a href="{{ url_for('hosts.refresh') }}" title="刷新" class="btn btn-action"><i class="icon-refresh"></i></a>
     </div>
     <div class="clear"></div>
 </div>
@@ -21,25 +21,38 @@
         </tr>
     </thead>
     <tbody>
-        {% if hosts.__len__() == 0 %}
+        {% if hosts.items.__len__() == 0 %}
         <tr>
             <td colspan="5">Null</td>
         </tr>
         {% endif %}
-        {% for x in hosts %}
+        {% for x in hosts.items %}
         <tr>
             <td>{{ x.hostname }}</td>
             <td>{{ x.cluster.name }}</td>
             <td>{{ x.vmnum }}</td>
             <td>
                 <div class="percent-group">
+                    {% if x.max_cpu == 0: %}
+                    <div class="bar top" style="width: 0%;"></div>
+                    <div class="bar bottom" style="width: 0%;"></div>
+                    <div class="text">{{ x.cpu_usage }} / - / -</div>
+                    {% else %}
                     <div class="bar top" style="width: {{ 100*x.cpu_usage/x.max_cpu }}%;"></div>
                     <div class="bar bottom" style="width: {{ 100*x.used_cpu/x.max_cpu }}%;"></div>
                     <div class="text">{{ x.cpu_usage }} / {{ x.used_cpu }} / {{ x.max_cpu }}</div>
+                    {% endif %}
                 </div>
             </td>
             <td>
                 <div class="percent-group">
+                    {% if x.max_mem == 0: %}
+                    <div class="bar top" style="width: 0%"></div>
+                    <div class="bar bottom" style="width: 0%"></div>
+                    <div class="text">
+                        {{ "%.1f"|format(x.mem_usage/1024/1024) }}G / - / -
+                    </div>
+                    {% else %}
                     <div class="bar top" style="width: {{ 100*x.mem_usage/x.max_mem }}%"></div>
                     <div class="bar bottom" style="width: {{ 100*x.used_mem/x.max_mem }}%"></div>
                     <div class="text">
@@ -47,10 +60,14 @@
                         {{ "%.1f"|format(x.used_mem/1024/1024) }}G / 
                         {{ "%.1f"|format(x.max_mem/1024/1024) }}G
                     </div>
+                    {% endif %}
                 </div>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+{% from 'import/pagination.html' import render_pagination %}
+{{ render_pagination(hosts, 'hosts.index') }}
 {% endblock %}

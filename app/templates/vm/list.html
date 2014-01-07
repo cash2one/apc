@@ -1,0 +1,117 @@
+{% macro vm_list(vms, title, endpoint, current_user, if_test=False, my=False) %}
+<div class="content-head">
+    <h2 class="pull-left">{{ title }}</h2>
+    <div class="pull-right" id="vmop-btn">
+        <a href="{{ url_for('vm.refresh') }}" title="刷新" class="btn btn-action refresh"><i class="icon-refresh"></i></a>
+        {% if if_test %}
+        <a href="#" title="续租" class="btn btn-action "><i class="icon-time"></i></a>
+        {% endif %}
+        <div class="btn-group">
+            <div class="btn-group group-dropdown">
+                <a href="#" title="启动" class="btn btn-action start dropdown-toggle"><i class="icon-play"></i></a>
+            </div>
+            <div class="btn-group group-dropdown">
+                <a href="#" title="关机" class="btn btn-action dropdown-toggle" data-toggle="dropdown"><i class="icon-pause"></i>&nbsp;<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="poweroff">
+                    <li><a href="#" class="poweroff"></i>关机</a></li>
+                    <li><a href="#" class="poweroff_hard"></i>强制关机</a></li>
+                </ul>
+            </div>
+            <div class="btn-group group-dropdown">
+                <a href="#" title="重启" class="btn btn-action dropdown-toggle" data-toggle="dropdown"><i class="icon-repeat"></i>&nbsp;<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="reboot">
+                    <li><a href="#" class="reboot"></i>重启</a></li>
+                    <li><a href="#" class="reboot_hard"></i>强制重启</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="btn-group">
+            <a href="#" title="重新创建" class="btn btn-action recreate"><i class="icon-retweet"></i></a>
+            <a href="#" title="删除" class="btn btn-action delete"><i class="icon-trash"></i></a>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<form id="vmop" class="hide" action="{{ url_for('vm.action_mult') }}" method="POST">
+    <input type="text" id="vmlist" name="vmlist" value=""/>
+    <input type="text" id="action" name="action" value=""/>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="10"><input type="checkbox"></th>
+            <th>机器名</th>
+            {% if not my %}
+            <th>CPU</th>
+            <th>内存</th>
+            {% endif %}
+            <th>IP</th>
+            <th>用途</th>
+            <th>状态</th>
+            {% if if_test %}
+            <th>剩余天数</th>
+            {% endif %}
+            <th>申请人</th>
+            <th>价格</th>
+            <th width="40">VNC</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if vms.items.__len__() == 0 %}
+        <tr>
+            {% if if_test %}
+            <td colspan="11">Null</td>
+            {% else %}
+            <td colspan="10">Null</td>
+            {% endif %}
+        </tr>
+        {% endif %}
+        {% for x in vms.items %}
+        <tr id="vm_{{ x.id }}" data-id="{{ x.id }}" data-detail="{{ url_for('vm.view', vm_id=x.id) }}">
+            <td><input type="checkbox"></td>
+            <td class="hostname">
+                <span>{{ x.hostname }}</span>
+                <input class="input-small hide" value="{{ x.hostname }}"/>
+            </td>
+            {% if not my %}
+            <td>{{ x.cpu }}核</td>
+            <td>{{ x.mem }}G</td>
+            {% endif %}
+            <td>{{ '<br/>'.join(x.ip)|safe }}</td>
+            <td>{{ x.desc }}</td>
+            <td>{{ x.status }}</td>
+            {% if if_test %}
+            <td>{{ x.days }}</td>
+            {% endif %}
+            <td>{{ x.user.chinese_name }}</td>
+            <td>{{ x.price }}</td>
+            {% if x.status == 'RUNNING' %}
+            <td>&nbsp;&nbsp;<a href="#" class="vnc_on"></a></td>
+            {% else %}
+            <td>&nbsp;&nbsp;<a href="#" class="vnc_off"></a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% from 'import/pagination.html' import render_pagination %}
+{{ render_pagination(vms, endpoint) }}
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="myModalLabel">Modal header</h4>
+    </div>
+    <div class="hide" id="tabs_active"></div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+{% endmacro %}
